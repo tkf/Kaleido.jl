@@ -1,5 +1,5 @@
 """
-    BijectionLens(inward, outward) :: Lens
+    BijectionLens(tofield, fromfield) :: Lens
     BijectionLens(xf::TransformVariables.AbstractTransform) :: Lens
 
 # Examples
@@ -34,21 +34,21 @@ BijectionLens
 abstract type Bijection end
 
 struct FunctionPair{TI, TO} <: Bijection
-    inward::TI
-    outward::TO
+    tofield::TI
+    fromfield::TO
 end
 
-inward(b::FunctionPair, x) = b.inward(x)
-outward(b::FunctionPair, y) = b.outward(y)
+tofield(b::FunctionPair, x) = b.tofield(x)
+fromfield(b::FunctionPair, y) = b.fromfield(y)
 
 struct BijectionLens{TB <: Bijection} <: KaleidoLens
     bijection::TB
 end
 
-Setfield.get(obj, l::BijectionLens) = outward(l.bijection, obj)
-Setfield.set(::Any, l::BijectionLens, x) = inward(l.bijection, x)
+Setfield.get(obj, l::BijectionLens) = fromfield(l.bijection, obj)
+Setfield.set(::Any, l::BijectionLens, x) = tofield(l.bijection, x)
 
-BijectionLens(inward, outward) = BijectionLens(FunctionPair(inward, outward))
+BijectionLens(tofield, fromfield) = BijectionLens(FunctionPair(tofield, fromfield))
 BijectionLens(thing) = BijectionLens(Bijection(thing))
 
 Base.show(io::IO, lens::BijectionLens{<:FunctionPair}) =
