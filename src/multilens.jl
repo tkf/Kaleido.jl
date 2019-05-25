@@ -1,7 +1,7 @@
 const Lenses{N} = NTuple{N, Lens}
 const NamedLenses{N, names} = NamedTuple{names, <:Lenses{N}}
 
-struct MultiLens{N, L <: Union{Lenses{N}, NamedLenses{N}}} <: Lens
+struct MultiLens{N, L <: Union{Lenses{N}, NamedLenses{N}}} <: KaleidoLens
     lenses::L
 end
 

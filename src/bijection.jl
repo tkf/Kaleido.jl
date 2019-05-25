@@ -3,7 +3,7 @@
 """
 BijectionLens
 
-struct BijectionLens{TI, TO} <: Lens
+struct BijectionLens{TI, TO} <: KaleidoLens
     inward::TI
     outward::TO
 end
