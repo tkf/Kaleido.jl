@@ -24,10 +24,20 @@ end
         l = @eval $ex
 
         str1 = sprint(show, l)
-        @test occursin("Kaleido.", str1)
+        @debug """
+        Show of $ex:
+        $str1
+        """
+        @test startswith(str1, "Kaleido.")
+        @test_skip occursin("Kaleido.", str1)
 
         str2 = sprint(show, l; context=:limit => true)
-        @test !occursin("Kaleido.", str2)
+        @debug """
+        Show of $ex:
+        $str2
+        """
+        @test !startswith(str2, "Kaleido.")
+        @test_skip !occursin("Kaleido.", str2)
     end
 end
 
