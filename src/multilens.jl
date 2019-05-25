@@ -43,16 +43,22 @@ Setfield.get(obj, ml::MultiLens{N, <:Lenses{N}}) where {N} =
 Setfield.get(obj, ml::MultiLens{N, <:NamedLenses{N, names}}) where {N, names} =
     NamedTuple{names}(_getall(obj, ml.lenses))
 
-Setfield.set(obj, ml::MultiLens{N, <:Lenses{N}}, val::NTuple{N, Any}) where N =
-    foldl(zip(ml.lenses, val); init=obj) do obj, (l, v)
+Setfield.set(obj, ml::MultiLens, val) = _set(obj, ml, val)
+
+_set(
+    obj,
+    ml::MultiLens{N, <:Lenses{N}},
+    val::Union{NTuple{N, Any}, AbstractArray}
+) where N =
+    _foldl(_zip(ml.lenses, val), obj) do obj, (l, v)
         set(obj, l, v)
     end
 
-Setfield.set(
+_set(
     obj,
     ml::MultiLens{N, <:NamedLenses{N}},
-    val::NamedTuple{names, <:NTuple{N, Any}}
+    val::Union{NamedTuple{names, <:NTuple{N, Any}}, AbstractDict}
 ) where {N, names} =
-    foldl(zip(names, val); init=obj) do obj, (n, v)
+    _foldl(_zip(names, val), obj) do obj, (n, v)
         set(obj, getfield(ml.lenses, n), v)
     end

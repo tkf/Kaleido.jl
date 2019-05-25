@@ -1,6 +1,7 @@
 module TestMultiLens
 
 include("preamble.jl")
+using InteractiveUtils
 
 @testset "Tuple" begin
     ml = MultiLens((
@@ -32,6 +33,44 @@ end
         @test set((y=(z=2,), x=1, a=0), ml, val) === (y=(z="y.z",), x="x", a=0)
     end
     @test set((x=1, y=(z=2,)), ml, (a=:x, b="y.z")) === (x=:x, y=(z="y.z",))
+end
+
+function codegen_multilens_tuple()
+    obj = (
+        a = (b = :x,),
+        c = (:y, :z),
+    )
+    lens = MultiLens((
+        (@lens _.a.b),
+        # (@lens _.c[1]),
+        # (@lens _.c[2]),
+        (@lens _.c[$1]),
+        (@lens _.c[$2]),
+    ))
+    x = (1, 2, 3)
+    return sum(get(set(obj, lens, x), lens))
+end
+
+function codegen_multilens_namedtuple()
+    obj = (
+        a = (b = :x,),
+        c = (:y, :z),
+    )
+    lens = MultiLens((
+        i = (@lens _.a.b),
+        j = (@lens _.c[$1]),
+        k = (@lens _.c[$2]),
+    ))
+    x = (k = 1, i = 2, j = 3)
+    return sum(get(set(obj, lens, x), lens))
+end
+
+@testset "Gode gen: $(nameof(f))" for f in [
+    codegen_multilens_tuple
+    # codegen_multilens_namedtuple
+]
+    llvm = sprint(code_llvm, f, Tuple{})
+    @test occursin(r"i(32|64) 6\b", llvm)
 end
 
 end  # module

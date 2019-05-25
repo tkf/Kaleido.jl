@@ -26,3 +26,22 @@ end
 _default_show(io, obj) = print_apply(io, typeof(obj), _getfields(obj))
 
 Base.show(io::IO, lens::KaleidoLens) = _default_show(io, lens)
+
+struct _Zip{T1, T2}
+    it1::T1
+    it2::T2
+end
+
+const EmptyTuple = Union{Tuple{}, NamedTuple{(),Tuple{}}}
+const EmptyItr = Union{EmptyTuple, _Zip{<:EmptyTuple, <:EmptyTuple}}
+const AnyItr = Union{Tuple, NamedTuple, _Zip}
+const _zip = _Zip
+
+@inline Base.tail(it::_Zip) = _Zip(Base.tail(it.it1), Base.tail(it.it2))
+@inline Base.getindex(it::_Zip, i) = (it.it1[i], it.it2[i])
+
+@inline _mapfoldl(::Any, ::Any, ::EmptyItr, init) = init
+@inline _mapfoldl(f, op, xs::AnyItr, init) =
+    _mapfoldl(f, op, Base.tail(xs), op(init, f(xs[1])))
+
+@inline _foldl(op, xs, init) = _mapfoldl(identity, op, xs, init)
