@@ -8,4 +8,32 @@
 
 Kaleido.jl is a collection of useful
 [`Lens`](https://jw3126.github.io/Setfield.jl/latest/index.html#Setfield.Lens)es
-for enhancing [Setfield.jl](https://github.com/jw3126/Setfield.jl).
+that enhance [Setfield.jl](https://github.com/jw3126/Setfield.jl).
+
+```jldoctest
+julia> using Setfield, Kaleido
+
+julia> ml = MultiLens((
+           (@lens _.x),
+           (@lens _.y.z) ∘ toℝ₊,
+       ));
+
+julia> @assert get((x=1, y=(z=1.0,)), ml) == (1, 0.0)
+
+julia> @assert set((x=1, y=(z=2,)), ml, ("x", -1)) == (x="x", y=(z=exp(-1),))
+```
+
+Kaleido.jl also works with `AbstractTransform` defined in
+[TransformVariables.jl](https://github.com/tpapp/TransformVariables.jl):
+
+```jldoctest
+julia> using Setfield, Kaleido, TransformVariables
+
+julia> l = (@lens _.y[2]) ∘ BijectionLens(as𝕀);
+
+julia> obj = (x=0, y=(1, 0.5, 3));
+
+julia> @assert get(obj, l) == 0
+
+julia> @assert set(obj, l, Inf).y[2] ≈ 1
+```
