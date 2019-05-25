@@ -23,3 +23,6 @@ Setfield.set(::Any, l::BijectionLens, x) = inward(l.bijection, x)
 
 BijectionLens(inward, outward) = BijectionLens(FunctionPair(inward, outward))
 BijectionLens(thing) = BijectionLens(Bijection(thing))
+
+Base.show(io::IO, lens::BijectionLens{<:FunctionPair}) =
+    print_apply(io, typeof(lens), _getfields(lens.bijection))
