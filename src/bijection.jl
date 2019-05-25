@@ -62,6 +62,9 @@ logit(x::Real) = log(x / (one(x) - x))
 """
     toℝ₊ :: BijectionLens
 
+This is a stripped-down version of `BijectionLens(TransformVariables.asℝ₊)`
+that works without TransformVariables.jl.
+
 # Examples
 ```jldoctest
 julia> using Setfield, Kaleido
@@ -80,6 +83,9 @@ const toℝ₊ = BijectionLens(exp, log)
 """
     toℝ₋ :: BijectionLens
 
+This is a stripped-down version of `BijectionLens(TransformVariables.asℝ₋)`
+that works without TransformVariables.jl.
+
 # Examples
 ```jldoctest
 julia> using Setfield, Kaleido
@@ -97,6 +103,9 @@ const toℝ₋ = BijectionLens((-) ∘ exp, log ∘ -)
 
 """
     to𝕀 :: BijectionLens
+
+This is a stripped-down version of `BijectionLens(TransformVariables.as𝕀)`
+that works without TransformVariables.jl.
 
 # Examples
 ```jldoctest
