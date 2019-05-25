@@ -10,7 +10,7 @@ Kaleido.jl is a collection of useful
 [`Lens`](https://jw3126.github.io/Setfield.jl/latest/index.html#Setfield.Lens)es
 that enhance [Setfield.jl](https://github.com/jw3126/Setfield.jl).
 
-```jldoctest
+```julia
 julia> using Setfield, Kaleido
 
 julia> ml = MultiLens((
@@ -26,7 +26,7 @@ julia> @assert set((x=1, y=(z=2,)), ml, ("x", -1)) == (x="x", y=(z=exp(-1),))
 Kaleido.jl also works with `AbstractTransform` defined in
 [TransformVariables.jl](https://github.com/tpapp/TransformVariables.jl):
 
-```jldoctest
+```julia
 julia> using Setfield, Kaleido, TransformVariables
 
 julia> l = (@lens _.y[2]) ∘ BijectionLens(as𝕀);
