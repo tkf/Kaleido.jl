@@ -10,6 +10,7 @@ makedocs(;
     repo="https://github.com/tkf/Kaleido.jl/blob/{commit}{path}#L{line}",
     sitename="Kaleido.jl",
     authors="Takafumi Arakaki <aka.tkf@gmail.com>",
+    strict=true,
 )
 
 deploydocs(;

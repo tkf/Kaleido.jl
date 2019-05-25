@@ -1,6 +1,6 @@
 module Kaleido
 
-export MultiLens, BijectionLens
+export MultiLens, BijectionLens, toℝ₊, toℝ₋, to𝕀
 
 using Setfield
 using Requires
