@@ -4,6 +4,10 @@
 Pages = ["index.md"]
 ```
 
+```@docs
+Kaleido
+```
+
 ## Setting/getting multiple locations
 
 ```@docs

@@ -1,3 +1,4 @@
+@doc read(joinpath(dirname(@__DIR__), "README.md"), String) ->
 module Kaleido
 
 export MultiLens, BijectionLens, toℝ₊, toℝ₋, to𝕀
