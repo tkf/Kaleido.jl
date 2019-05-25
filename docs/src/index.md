@@ -14,7 +14,7 @@ Kaleido
 Kaleido.MultiLens
 ```
 
-## Bijective transformation as lenses
+## Bijective transformations as lenses
 
 ```@docs
 Kaleido.BijectionLens
