@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · Kaleido.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>Kaleido.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li class="current"><a class="toctext" href>Home</a><ul class="internal"><li><a class="toctext" href="#Setting/getting-multiple-locations-1">Setting/getting multiple locations</a></li><li><a class="toctext" href="#Bijective-transformation-as-lenses-1">Bijective transformation as lenses</a></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Home</a></li></ul><a class="edit-page" href="https://github.com/tkf/Kaleido.jl/blob/master/docs/src/index.md#L"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Home</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Kaleido.jl-1" href="#Kaleido.jl-1">Kaleido.jl</a></h1><ul><li><a href="#Kaleido.toℝ₊"><code>Kaleido.toℝ₊</code></a></li><li><a href="#Kaleido.toℝ₋"><code>Kaleido.toℝ₋</code></a></li><li><a href="#Kaleido.to𝕀"><code>Kaleido.to𝕀</code></a></li><li><a href="#Kaleido.BijectionLens"><code>Kaleido.BijectionLens</code></a></li><li><a href="#Kaleido.MultiLens"><code>Kaleido.MultiLens</code></a></li></ul><h2><a class="nav-anchor" id="Setting/getting-multiple-locations-1" href="#Setting/getting-multiple-locations-1">Setting/getting multiple locations</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.MultiLens" href="#Kaleido.MultiLens"><code>Kaleido.MultiLens</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">MultiLens(lenses::Tuple)
+MultiLens(lenses::NamedTuple)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+
+julia&gt; ml = MultiLens((
+           (@lens _.x),
+           (@lens _.y.z),
+       ));
+
+julia&gt; @assert get((x=1, y=(z=2,)), ml) === (1, 2)
+
+julia&gt; @assert set((x=1, y=(z=2,)), ml, (&quot;x&quot;, &quot;y.z&quot;)) === (x=&quot;x&quot;, y=(z=&quot;y.z&quot;,))
+
+julia&gt; ml = MultiLens((
+           a = (@lens _.x),
+           b = (@lens _.y.z),
+       ));
+
+julia&gt; @assert get((x=1, y=(z=2,)), ml) === (a=1, b=2)
+
+julia&gt; @assert set((x=1, y=(z=2,)), ml, (a=:x, b=&quot;y.z&quot;)) === (x=:x, y=(z=&quot;y.z&quot;,))
+
+julia&gt; @assert set((x=1, y=(z=2,)), ml, (b=&quot;y.z&quot;, a=:x)) === (x=:x, y=(z=&quot;y.z&quot;,))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/a5e104434f1b7827ba239e05bfa912f674aa6b71/src/multilens.jl#LL1-L29">source</a></section><h2><a class="nav-anchor" id="Bijective-transformation-as-lenses-1" href="#Bijective-transformation-as-lenses-1">Bijective transformation as lenses</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.BijectionLens" href="#Kaleido.BijectionLens"><code>Kaleido.BijectionLens</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">BijectionLens(inward, outward) :: Lens
+BijectionLens(xf::TransformVariables.AbstractTransform) :: Lens</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+
+julia&gt; l = (@lens _.y[2]) ∘ BijectionLens(x -&gt; 2x, x -&gt; x/2);
+
+julia&gt; obj = (x=0, y=(1, 2, 3));
+
+julia&gt; @assert get(obj, l) == 1.0 == 2/2
+
+julia&gt; @assert set(obj, l, 0.5) == (x=0, y=(1, 1.0, 3))</code></pre><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido, TransformVariables
+
+julia&gt; l = (@lens _.y[2]) ∘ BijectionLens(as𝕀);
+
+julia&gt; obj = (x=0, y=(1, 0.5, 3));
+
+julia&gt; @assert get(obj, l) == 0
+
+julia&gt; @assert set(obj, l, Inf).y[2] ≈ 1
+
+julia&gt; @assert set(obj, l, -Inf).y[2] ≈ 0.0</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/a5e104434f1b7827ba239e05bfa912f674aa6b71/src/bijection.jl#LL1-L31">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.toℝ₊" href="#Kaleido.toℝ₊"><code>Kaleido.toℝ₊</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">toℝ₊ :: BijectionLens</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+
+julia&gt; l = (@lens _.y[2]) ∘ toℝ₊;
+
+julia&gt; obj = (x=0, y=(0, 1, 2));
+
+julia&gt; @assert get(obj, l) == 0.0 == log(obj.y[2])
+
+julia&gt; @assert set(obj, l, -1) == (x=0, y=(0, exp(-1), 2))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/a5e104434f1b7827ba239e05bfa912f674aa6b71/src/bijection.jl#LL62-L77">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.toℝ₋" href="#Kaleido.toℝ₋"><code>Kaleido.toℝ₋</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">toℝ₋ :: BijectionLens</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+
+julia&gt; l = (@lens _.y[2]) ∘ toℝ₋;
+
+julia&gt; obj = (x=0, y=(0, -1, 2));
+
+julia&gt; @assert get(obj, l) == 0.0 == log(-obj.y[2])
+
+julia&gt; @assert set(obj, l, 1) == (x=0, y=(0, -exp(1), 2))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/a5e104434f1b7827ba239e05bfa912f674aa6b71/src/bijection.jl#LL80-L95">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.to𝕀" href="#Kaleido.to𝕀"><code>Kaleido.to𝕀</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">to𝕀 :: BijectionLens</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+
+julia&gt; l = (@lens _.y[2]) ∘ to𝕀;
+
+julia&gt; obj = (x=0, y=(0, 0.5, 2));
+
+julia&gt; @assert get(obj, l) == 0.0
+
+julia&gt; @assert set(obj, l, Inf).y[2] ≈ 1
+
+julia&gt; @assert set(obj, l, -Inf).y[2] ≈ 0</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/a5e104434f1b7827ba239e05bfa912f674aa6b71/src/bijection.jl#LL98-L115">source</a></section><footer><hr/><a class="next" href="internals/"><span class="direction">Next</span><span class="title">Internals</span></a></footer></article></body></html>
