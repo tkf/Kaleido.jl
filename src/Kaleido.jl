@@ -1,5 +1,9 @@
 module Kaleido
 
-greet() = print("Hello World!")
+export MultiLens
+
+using Setfield
+
+include("multilens.jl")
 
 end # module

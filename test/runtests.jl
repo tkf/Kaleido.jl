@@ -1,6 +1,10 @@
-using Kaleido
+module TestKaleido
 using Test
 
-@testset "Kaleido.jl" begin
-    # Write your own tests here.
+@testset "$file" for file in [
+        "test_multilens.jl"
+        ]
+    include(file)
 end
+
+end  # module
