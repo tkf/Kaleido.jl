@@ -21,6 +21,19 @@ julia> ml = MultiLens((
 julia> @assert get((x=1, y=(z=1.0,)), ml) == (1, 0.0)
 
 julia> @assert set((x=1, y=(z=2,)), ml, ("x", -1)) == (x="x", y=(z=exp(-1),))
+
+julia> l = MultiLens((
+           (@lens _.x) ∘ IndexBatchLens(:a, :b, :c),
+           (@lens _.y) ∘ IndexBatchLens(:d, :e),
+       )) ∘ BijectionLens(
+           ((x, y),) -> (x..., y...),
+           xs -> (xs[1:3], xs[4:5]),
+       );
+
+julia> @assert get((x=(a=1, b=2, c=3), y=(d=4, e=5)), l) === (1, 2, 3, 4, 5)
+
+julia> @assert set((x=(a=1, b=2, c=3), y=(d=4, e=5)), l, (10, 20, 30, 40, 50)) ===
+           (x=(a=10, b=20, c=30), y=(d=40, e=50))
 ```
 
 Kaleido.jl also works with `AbstractTransform` defined in
