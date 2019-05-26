@@ -71,23 +71,13 @@ _getall(obj, lenses) = map(l -> get(obj, l), lenses)
 
 Setfield.get(obj, ml::MultiLens) = ml.castout(_getall(obj, ml.lenses))
 
-Setfield.set(obj, ml::MultiLens, val) = _set(obj, ml, val)
-
-_set(
-    obj,
-    ml::MultiLens{N, <:Lenses{N}},
-    val::Union{NTuple{N, Any}, AbstractArray}
-) where N =
+Setfield.set(obj, ml::MultiLens{N, <:Lenses{N}}, val) where N =
     _foldl(_enumerate(ml.lenses), obj) do obj, (i, l)
         set(obj, l, val[i])
     end
 
-_set(
-    obj,
-    ml::MultiLens{N, <:NamedLenses{N, names}},
-    val::Union{NamedTuple{<:Any, <:NTuple{N, Any}}, AbstractDict}
-) where {N, names} =
-    _set(
+Setfield.set(obj, ml::MultiLens{N, <:NamedLenses{N, names}}, val) where {N, names} =
+    set(
         obj,
         MultiLens(Tuple(ml.lenses)),
         map(n -> val[n], names) :: Tuple,

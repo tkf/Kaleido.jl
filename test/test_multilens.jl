@@ -14,6 +14,7 @@ function test_positional_set(ml)
         (10, 20),
         [10, 20],
         [10, 20]',
+        Broadcast.broadcasted(x -> 10x, [1, 2]),
         SVector(10, 20),
         SMatrix{1, 2}(10, 20),
     ]
