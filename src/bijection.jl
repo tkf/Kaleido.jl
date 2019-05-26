@@ -1,12 +1,12 @@
 """
-    BijectionLens(tofield, fromfield) :: Lens
+    BijectionLens(fromfield, tofield) :: Lens
     BijectionLens(xf::TransformVariables.AbstractTransform) :: Lens
 
 # Examples
 ```jldoctest
 julia> using Setfield, Kaleido
 
-julia> l = (@lens _.y[2]) ∘ BijectionLens(x -> 2x, x -> x/2);
+julia> l = (@lens _.y[2]) ∘ BijectionLens(x -> x/2, x -> 2x);
 
 julia> obj = (x=0, y=(1, 2, 3));
 
@@ -33,9 +33,9 @@ BijectionLens
 
 abstract type Bijection end
 
-struct FunctionPair{TI, TO} <: Bijection
-    tofield::TI
+struct FunctionPair{TO, TI} <: Bijection
     fromfield::TO
+    tofield::TI
 end
 
 tofield(b::FunctionPair, x) = b.tofield(x)
@@ -48,7 +48,7 @@ end
 Setfield.get(obj, l::BijectionLens) = fromfield(l.bijection, obj)
 Setfield.set(::Any, l::BijectionLens, x) = tofield(l.bijection, x)
 
-BijectionLens(tofield, fromfield) = BijectionLens(FunctionPair(tofield, fromfield))
+BijectionLens(fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofield))
 BijectionLens(thing) = BijectionLens(Bijection(thing))
 
 Base.show(io::IO, lens::BijectionLens{<:FunctionPair}) =
@@ -78,7 +78,7 @@ julia> @assert get(obj, l) == 0.0 == log(obj.y[2])
 julia> @assert set(obj, l, -1) == (x=0, y=(0, exp(-1), 2))
 ```
 """
-const toℝ₊ = BijectionLens(exp, log)
+const toℝ₊ = BijectionLens(log, exp)
 
 """
     toℝ₋ :: BijectionLens
@@ -99,7 +99,7 @@ julia> @assert get(obj, l) == 0.0 == log(-obj.y[2])
 julia> @assert set(obj, l, 1) == (x=0, y=(0, -exp(1), 2))
 ```
 """
-const toℝ₋ = BijectionLens((-) ∘ exp, log ∘ -)
+const toℝ₋ = BijectionLens(log ∘ -, (-) ∘ exp)
 
 """
     to𝕀 :: BijectionLens
@@ -122,4 +122,4 @@ julia> @assert set(obj, l, Inf).y[2] ≈ 1
 julia> @assert set(obj, l, -Inf).y[2] ≈ 0
 ```
 """
-const to𝕀 = BijectionLens(logistic, logit)
+const to𝕀 = BijectionLens(logit, logistic)
