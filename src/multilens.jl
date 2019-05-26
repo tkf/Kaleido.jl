@@ -57,8 +57,8 @@ _set(
 _set(
     obj,
     ml::MultiLens{N, <:NamedLenses{N, names}},
-    val::Union{NamedTuple{_names, <:NTuple{N, Any}}, AbstractDict}
-) where {N, names, _names} =
+    val::Union{NamedTuple{<:Any, <:NTuple{N, Any}}, AbstractDict}
+) where {N, names} =
     _set(
         obj,
         MultiLens(Tuple(ml.lenses)),
