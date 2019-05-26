@@ -16,8 +16,8 @@ julia&gt; obj = (x=0, y=(1, 0.5, 3));
 
 julia&gt; @assert get(obj, l) == 0
 
-julia&gt; @assert set(obj, l, Inf).y[2] ≈ 1</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/91fdd7756a8cf6446fe55ff0b8d062c9a4a0159e/src/Kaleido.jl#LL1-L41">source</a></section><h2><a class="nav-anchor" id="Setting/getting-multiple-locations-1" href="#Setting/getting-multiple-locations-1">Setting/getting multiple locations</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.MultiLens" href="#Kaleido.MultiLens"><code>Kaleido.MultiLens</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">MultiLens(lenses::Tuple)
-MultiLens(lenses::NamedTuple)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+julia&gt; @assert set(obj, l, Inf).y[2] ≈ 1</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/bee469e37e341bd07aeef9b47e1535c1c05929d1/src/Kaleido.jl#LL1-L41">source</a></section><h2><a class="nav-anchor" id="Setting/getting-multiple-locations-1" href="#Setting/getting-multiple-locations-1">Setting/getting multiple locations</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.MultiLens" href="#Kaleido.MultiLens"><code>Kaleido.MultiLens</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">MultiLens([castout,] lenses::Tuple)
+MultiLens([castout,] lenses::NamedTuple)</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
 
 julia&gt; ml = MultiLens((
            (@lens _.x),
@@ -37,10 +37,22 @@ julia&gt; @assert get((x=1, y=(z=2,)), ml) === (a=1, b=2)
 
 julia&gt; @assert set((x=1, y=(z=2,)), ml, (a=:x, b=&quot;y.z&quot;)) === (x=:x, y=(z=&quot;y.z&quot;,))
 
-julia&gt; @assert set((x=1, y=(z=2,)), ml, (b=&quot;y.z&quot;, a=:x)) === (x=:x, y=(z=&quot;y.z&quot;,))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/91fdd7756a8cf6446fe55ff0b8d062c9a4a0159e/src/multilens.jl#LL1-L29">source</a></section><h2><a class="nav-anchor" id="Bijective-transformations-as-lenses-1" href="#Bijective-transformations-as-lenses-1">Bijective transformations as lenses</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.BijectionLens" href="#Kaleido.BijectionLens"><code>Kaleido.BijectionLens</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">BijectionLens(inward, outward) :: Lens
+julia&gt; @assert set((x=1, y=(z=2,)), ml, (b=&quot;y.z&quot;, a=:x)) === (x=:x, y=(z=&quot;y.z&quot;,))
+
+julia&gt; using StaticArrays
+
+julia&gt; ml = MultiLens(
+           SVector,
+           (
+               (@lens _.x),
+               (@lens _.y.z),
+           )
+       );
+
+julia&gt; @assert get((x=1, y=(z=2,)), ml) === SVector(1, 2)</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/bee469e37e341bd07aeef9b47e1535c1c05929d1/src/multilens.jl#LL1-L41">source</a></section><h2><a class="nav-anchor" id="Bijective-transformations-as-lenses-1" href="#Bijective-transformations-as-lenses-1">Bijective transformations as lenses</a></h2><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.BijectionLens" href="#Kaleido.BijectionLens"><code>Kaleido.BijectionLens</code></a> — <span class="docstring-category">Type</span>.</div><div><div><pre><code class="language-julia">BijectionLens(fromfield, tofield) :: Lens
 BijectionLens(xf::TransformVariables.AbstractTransform) :: Lens</code></pre><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
 
-julia&gt; l = (@lens _.y[2]) ∘ BijectionLens(x -&gt; 2x, x -&gt; x/2);
+julia&gt; l = (@lens _.y[2]) ∘ BijectionLens(x -&gt; x/2, x -&gt; 2x);
 
 julia&gt; obj = (x=0, y=(1, 2, 3));
 
@@ -56,7 +68,7 @@ julia&gt; @assert get(obj, l) == 0
 
 julia&gt; @assert set(obj, l, Inf).y[2] ≈ 1
 
-julia&gt; @assert set(obj, l, -Inf).y[2] ≈ 0.0</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/91fdd7756a8cf6446fe55ff0b8d062c9a4a0159e/src/bijection.jl#LL1-L31">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.toℝ₊" href="#Kaleido.toℝ₊"><code>Kaleido.toℝ₊</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">toℝ₊ :: BijectionLens</code></pre><p>This is a stripped-down version of <code>BijectionLens(TransformVariables.asℝ₊)</code> that works without TransformVariables.jl.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+julia&gt; @assert set(obj, l, -Inf).y[2] ≈ 0.0</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/bee469e37e341bd07aeef9b47e1535c1c05929d1/src/bijection.jl#LL1-L31">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.toℝ₊" href="#Kaleido.toℝ₊"><code>Kaleido.toℝ₊</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">toℝ₊ :: BijectionLens</code></pre><p>This is a stripped-down version of <code>BijectionLens(TransformVariables.asℝ₊)</code> that works without TransformVariables.jl.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
 
 julia&gt; l = (@lens _.y[2]) ∘ toℝ₊;
 
@@ -64,7 +76,7 @@ julia&gt; obj = (x=0, y=(0, 1, 2));
 
 julia&gt; @assert get(obj, l) == 0.0 == log(obj.y[2])
 
-julia&gt; @assert set(obj, l, -1) == (x=0, y=(0, exp(-1), 2))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/91fdd7756a8cf6446fe55ff0b8d062c9a4a0159e/src/bijection.jl#LL62-L80">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.toℝ₋" href="#Kaleido.toℝ₋"><code>Kaleido.toℝ₋</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">toℝ₋ :: BijectionLens</code></pre><p>This is a stripped-down version of <code>BijectionLens(TransformVariables.asℝ₋)</code> that works without TransformVariables.jl.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+julia&gt; @assert set(obj, l, -1) == (x=0, y=(0, exp(-1), 2))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/bee469e37e341bd07aeef9b47e1535c1c05929d1/src/bijection.jl#LL62-L80">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.toℝ₋" href="#Kaleido.toℝ₋"><code>Kaleido.toℝ₋</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">toℝ₋ :: BijectionLens</code></pre><p>This is a stripped-down version of <code>BijectionLens(TransformVariables.asℝ₋)</code> that works without TransformVariables.jl.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
 
 julia&gt; l = (@lens _.y[2]) ∘ toℝ₋;
 
@@ -72,7 +84,7 @@ julia&gt; obj = (x=0, y=(0, -1, 2));
 
 julia&gt; @assert get(obj, l) == 0.0 == log(-obj.y[2])
 
-julia&gt; @assert set(obj, l, 1) == (x=0, y=(0, -exp(1), 2))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/91fdd7756a8cf6446fe55ff0b8d062c9a4a0159e/src/bijection.jl#LL83-L101">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.to𝕀" href="#Kaleido.to𝕀"><code>Kaleido.to𝕀</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">to𝕀 :: BijectionLens</code></pre><p>This is a stripped-down version of <code>BijectionLens(TransformVariables.as𝕀)</code> that works without TransformVariables.jl.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
+julia&gt; @assert set(obj, l, 1) == (x=0, y=(0, -exp(1), 2))</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/bee469e37e341bd07aeef9b47e1535c1c05929d1/src/bijection.jl#LL83-L101">source</a></section><section class="docstring"><div class="docstring-header"><a class="docstring-binding" id="Kaleido.to𝕀" href="#Kaleido.to𝕀"><code>Kaleido.to𝕀</code></a> — <span class="docstring-category">Constant</span>.</div><div><div><pre><code class="language-julia">to𝕀 :: BijectionLens</code></pre><p>This is a stripped-down version of <code>BijectionLens(TransformVariables.as𝕀)</code> that works without TransformVariables.jl.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl">julia&gt; using Setfield, Kaleido
 
 julia&gt; l = (@lens _.y[2]) ∘ to𝕀;
 
@@ -82,4 +94,4 @@ julia&gt; @assert get(obj, l) == 0.0
 
 julia&gt; @assert set(obj, l, Inf).y[2] ≈ 1
 
-julia&gt; @assert set(obj, l, -Inf).y[2] ≈ 0</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/91fdd7756a8cf6446fe55ff0b8d062c9a4a0159e/src/bijection.jl#LL104-L124">source</a></section><footer><hr/><a class="next" href="internals/"><span class="direction">Next</span><span class="title">Internals</span></a></footer></article></body></html>
+julia&gt; @assert set(obj, l, -Inf).y[2] ≈ 0</code></pre></div></div><a class="source-link" target="_blank" href="https://github.com/tkf/Kaleido.jl/blob/bee469e37e341bd07aeef9b47e1535c1c05929d1/src/bijection.jl#LL104-L124">source</a></section><footer><hr/><a class="next" href="internals/"><span class="direction">Next</span><span class="title">Internals</span></a></footer></article></body></html>
