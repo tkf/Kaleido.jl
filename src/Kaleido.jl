@@ -4,12 +4,21 @@
 end ->
 module Kaleido
 
-export MultiLens, BijectionLens, toℝ₊, toℝ₋, to𝕀
+export
+    BijectionLens,
+    IndexBatchLens,
+    KeyBatchLens,
+    MultiLens,
+    PropertyBatchLens,
+    toℝ₊,
+    toℝ₋,
+    to𝕀
 
 using Setfield
 using Requires
 
 include("base.jl")
+include("batchlenses.jl")
 include("multilens.jl")
 include("bijection.jl")
 

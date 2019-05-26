@@ -12,6 +12,9 @@ Kaleido
 
 ```@docs
 Kaleido.MultiLens
+Kaleido.PropertyBatchLens
+Kaleido.KeyBatchLens
+Kaleido.IndexBatchLens
 ```
 
 ## Bijective transformations as lenses
