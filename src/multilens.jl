@@ -56,9 +56,11 @@ _set(
 
 _set(
     obj,
-    ml::MultiLens{N, <:NamedLenses{N}},
-    val::Union{NamedTuple{names, <:NTuple{N, Any}}, AbstractDict}
-) where {N, names} =
-    _foldl(_zip(names, val), obj) do obj, (n, v)
-        set(obj, getfield(ml.lenses, n), v)
-    end
+    ml::MultiLens{N, <:NamedLenses{N, names}},
+    val::Union{NamedTuple{_names, <:NTuple{N, Any}}, AbstractDict}
+) where {N, names, _names} =
+    _set(
+        obj,
+        MultiLens(Tuple(ml.lenses)),
+        map(n -> val[n], names) :: Tuple,
+    )
