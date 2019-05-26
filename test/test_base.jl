@@ -17,7 +17,7 @@ end
 Base.show(io::IO, case::ShowTestCase) = print(io, case.source)
 
 showtestcases = ShowTestCase.(lenses_as_shown, desired_show, Ref(true))
-@assert length(showtestcases) == 3
+@assert length(showtestcases) == 4
 
 @testset "repr" begin
     @testset for case in showtestcases
@@ -46,7 +46,7 @@ end
         """
         @test !occursin("Kaleido.", str2)
         if case.desired_show
-            @test_skip str2 == case.source
+            @test str2 == case.source
         end
     end
 end

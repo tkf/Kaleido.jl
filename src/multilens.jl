@@ -56,9 +56,16 @@ end
 MultiLens(castout, lenses) =
     _MultiLens(prefer_singleton_callable(castout), lenses)
 
-MultiLens(lenses::Lenses) = MultiLens(identity, lenses)
+MultiLens(lenses::Lenses) = MultiLens(identity, lenses) :: MultiLensTuples
 MultiLens(lenses::NamedTuple{names, <:Lenses}) where names =
-    MultiLens(NamedTuple{names}, lenses)
+    MultiLens(NamedTuple{names}, lenses) :: MultiLensNamedTuples
+
+const MultiLensTuples{N} = MultiLens{N, <:Lenses{N}, typeof(identity)}
+const MultiLensNamedTuples{N, names} = MultiLens{
+    N,
+    <:NamedLenses{N, names},
+    SingletonCallable{NamedTuple{names}},
+}
 
 _getall(obj, lenses) = map(l -> get(obj, l), lenses)
 
@@ -85,3 +92,7 @@ _set(
         MultiLens(Tuple(ml.lenses)),
         map(n -> val[n], names) :: Tuple,
     )
+
+# Print like `MultiLens((l1, l2))` and `MultiLens((a=l1, b=l2))`
+Base.show(io::IO, lens::Union{MultiLensTuples, MultiLensNamedTuples}) =
+    print_apply(io, MultiLens, (lens.lenses,))
