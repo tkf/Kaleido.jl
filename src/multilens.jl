@@ -25,6 +25,18 @@ julia> @assert get((x=1, y=(z=2,)), ml) === (a=1, b=2)
 julia> @assert set((x=1, y=(z=2,)), ml, (a=:x, b="y.z")) === (x=:x, y=(z="y.z",))
 
 julia> @assert set((x=1, y=(z=2,)), ml, (b="y.z", a=:x)) === (x=:x, y=(z="y.z",))
+
+julia> using StaticArrays
+
+julia> ml = MultiLens(
+           SVector,
+           (
+               (@lens _.x),
+               (@lens _.y.z),
+           )
+       );
+
+julia> @assert get((x=1, y=(z=2,)), ml) === SVector(1, 2)
 ```
 """
 MultiLens

@@ -2,6 +2,7 @@ module TestMultiLens
 
 include("preamble.jl")
 using InteractiveUtils
+using StaticArrays
 
 @testset "Tuple" begin
     ml = MultiLens((
@@ -39,7 +40,7 @@ end
     test_namedtuple_set(ml)
 end
 
-@testset "castout" begin
+@testset "castout = Tuple" begin
     # Input is a `NamedTuple`; Output is a `Tuple`
     ml = MultiLens(
         Tuple,
@@ -51,6 +52,22 @@ end
 
     @test get((x=1, y=(z=2,)), ml) === (1, 2)
     @test get((y=(z=2,), x=1, a=0), ml) === (1, 2)
+
+    test_namedtuple_set(ml)
+end
+
+@testset "castout = SVector ∘ Tuple" begin
+    # Input is a `NamedTuple`; Output is a `SVector`
+    ml = MultiLens(
+        SVector ∘ Tuple,
+        (
+            a = (@lens _.x),
+            b = (@lens _.y.z),
+        )
+    )
+
+    @test get((x=1, y=(z=2,)), ml) === SVector(1, 2)
+    @test get((y=(z=2,), x=1, a=0), ml) === SVector(1, 2)
 
     test_namedtuple_set(ml)
 end
