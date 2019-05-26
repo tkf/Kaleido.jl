@@ -4,6 +4,13 @@ include("preamble.jl")
 using InteractiveUtils
 using StaticArrays
 
+function test_positional_set(ml)
+    @test set((x=1, y=(z=2,)), ml, ("x", "y.z")) === (x="x", y=(z="y.z",))
+    @test set((x=1, y=(z=2,)), ml, (:x, "y.z")) === (x=:x, y=(z="y.z",))
+    @test set((y=(z=2,), x=1, a=0), ml, ("x", "y.z")) ===
+        (y=(z="y.z",), x="x", a=0)
+end
+
 @testset "Tuple" begin
     ml = MultiLens((
         (@lens _.x),
@@ -13,10 +20,7 @@ using StaticArrays
     @test get((x=1, y=(z=2,)), ml) === (1, 2)
     @test get((y=(z=2,), x=1, a=0), ml) === (1, 2)
 
-    @test set((x=1, y=(z=2,)), ml, ("x", "y.z")) === (x="x", y=(z="y.z",))
-    @test set((x=1, y=(z=2,)), ml, (:x, "y.z")) === (x=:x, y=(z="y.z",))
-    @test set((y=(z=2,), x=1, a=0), ml, ("x", "y.z")) ===
-        (y=(z="y.z",), x="x", a=0)
+    test_positional_set(ml)
 end
 
 function test_namedtuple_set(ml)
