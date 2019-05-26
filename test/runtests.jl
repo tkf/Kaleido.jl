@@ -13,4 +13,8 @@ using Test
     include(file)
 end
 
+using Aqua
+using Kaleido
+Aqua.test_all(Kaleido)
+
 end  # module
