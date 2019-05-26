@@ -19,6 +19,7 @@ using Setfield
 using Requires
 
 include("base.jl")
+include("batchsetters.jl")
 include("batchlenses.jl")
 include("multilens.jl")
 include("flatlens.jl")

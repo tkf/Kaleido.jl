@@ -63,14 +63,19 @@ lenstypenameof(::BatchLens{<:Any, PROPERTY, valueacc}) where valueacc =
         INDEX => :IndexBatchLens,
     )[valueacc]
 
-Setfield.set(obj, ::BatchLens{names, PROPERTY, INDEX}, val) where names =
-    setproperties(obj, NamedTuple{names}(val))
+setter(objacc::Accessor) = setter(Val(objacc))
+setter(::Val{INDEX}) = setindices
+setter(::Val{KEY}) = setkeys
+setter(::Val{PROPERTY}) = setproperties
 
-Setfield.set(obj, ::BatchLens{names, PROPERTY, KEY}, val) where names =
-    setproperties(obj, NamedTuple{names}(map(n -> val[n], names)))
+Setfield.set(obj, ::BatchLens{names, objacc, INDEX}, val) where {names, objacc} =
+    setter(objacc)(obj, NamedTuple{names}(Tuple(val)))
 
-Setfield.set(obj, ::BatchLens{names, PROPERTY, PROPERTY}, val) where names =
-    setproperties(obj, NamedTuple{names}(map(n -> getproperty(val, n), names)))
+Setfield.set(obj, ::BatchLens{names, objacc, KEY}, val) where {names, objacc} =
+    setter(objacc)(obj, NamedTuple{names}(map(n -> val[n], names)))
+
+Setfield.set(obj, ::BatchLens{names, objacc, PROPERTY}, val) where {names, objacc} =
+    setter(objacc)(obj, NamedTuple{names}(map(n -> getproperty(val, n), names)))
 
 _get(::Val{INDEX}, obj, (i, name)) = getindex(obj, i)
 _get(::Val{KEY}, obj, (i, name)) = getindex(obj, name)
@@ -88,5 +93,5 @@ Setfield.get(obj, lens::Union{BatchLens{names, <:Any, KEY},
 BatchLens{<:Any, objacc, valueacc}(names::Vararg{Symbol}) where {objacc, valueacc} =
     BatchLens{names, objacc, valueacc}()
 
-Base.show(io::IO, lens::BatchLens{names}) where names =
+Base.show(io::IO, lens::BatchLens{names, PROPERTY}) where names =
     print_apply(io, Prefixed(prefixof(BatchLens), lenstypenameof(lens)), names)
