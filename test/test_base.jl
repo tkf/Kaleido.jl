@@ -1,6 +1,7 @@
 module TestBase
 
 include("preamble.jl")
+using Kaleido: prefer_singleton_callable
 
 expressions_block = quote
     MultiLens(((@lens _.x), (@lens _[1])))
@@ -37,6 +38,12 @@ end
         """
         @test !occursin("Kaleido.", str2)
     end
+end
+
+@testset "prefer_singleton_callable" begin
+    @test sizeof((Int,)) > 0
+    @test sizeof((prefer_singleton_callable(Int),)) == 0
+    @test sizeof((prefer_singleton_callable(identity),)) == 0
 end
 
 end  # module

@@ -1,6 +1,6 @@
 """
-    MultiLens(lenses::Tuple)
-    MultiLens(lenses::NamedTuple)
+    MultiLens([castout,] lenses::Tuple)
+    MultiLens([castout,] lenses::NamedTuple)
 
 # Examples
 ```jldoctest
@@ -31,17 +31,26 @@ MultiLens
 
 const Lenses{N} = NTuple{N, Lens}
 const NamedLenses{N, names} = NamedTuple{names, <:Lenses{N}}
+const AnyLenses{N} = Union{Lenses{N}, NamedLenses{N}}
 
-struct MultiLens{N, L <: Union{Lenses{N}, NamedLenses{N}}} <: KaleidoLens
-    lenses::L
+struct MultiLens{N, TL <: AnyLenses{N}, TO} <: KaleidoLens
+    castout::TO
+    lenses::TL
+
+    global _MultiLens(castout::TO, lenses::TL) where {N, TL <: AnyLenses{N}, TO} =
+        new{N, TL, TO}(castout, lenses)
 end
+
+MultiLens(castout, lenses) =
+    _MultiLens(prefer_singleton_callable(castout), lenses)
+
+MultiLens(lenses::Lenses) = MultiLens(identity, lenses)
+MultiLens(lenses::NamedTuple{names, <:Lenses}) where names =
+    MultiLens(NamedTuple{names}, lenses)
 
 _getall(obj, lenses) = map(l -> get(obj, l), lenses)
 
-Setfield.get(obj, ml::MultiLens{N, <:Lenses{N}}) where {N} =
-    _getall(obj, ml.lenses)
-Setfield.get(obj, ml::MultiLens{N, <:NamedLenses{N, names}}) where {N, names} =
-    NamedTuple{names}(_getall(obj, ml.lenses))
+Setfield.get(obj, ml::MultiLens) = ml.castout(_getall(obj, ml.lenses))
 
 Setfield.set(obj, ml::MultiLens, val) = _set(obj, ml, val)
 
