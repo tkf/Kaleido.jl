@@ -102,10 +102,29 @@ function codegen_multilens_namedtuple()
     return sum(Tuple(get(set(obj, lens, x), lens)))
 end
 
+function codegen_multilens_svector()
+    obj = (
+        a = (b = :x,),
+        c = (:y, :z),
+    )
+    lens = MultiLens(
+        SVector,
+        (
+            (@lens _.a.b),
+            (@lens _.c[$1]),
+            (@lens _.c[$2]),
+        )
+    )
+    x = (1, 2, 3)
+    return sum(get(set(obj, lens, x), lens))
+end
+
 @testset "Gode gen: $(nameof(f))" for f in [
     codegen_multilens_tuple
     codegen_multilens_namedtuple
+    codegen_multilens_svector
 ]
+    @test f() == 6
     llvm = sprint(code_llvm, f, Tuple{})
     @test occursin(r"i(32|64) 6\b", llvm)
 end
