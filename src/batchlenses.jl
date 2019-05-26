@@ -18,13 +18,17 @@ IndexBatchLens
 
 @enum Accessor INDEX KEY PROPERTY
 
-struct BatchLens{names, objacc, valueacc} <: KaleidoLens end
+struct BatchLens{names, objacc, valueacc} <: Lens end
 const PropertyBatchLens{names} = BatchLens{names, PROPERTY, PROPERTY}
 const KeyBatchLens{names} = BatchLens{names, PROPERTY, KEY}
 const IndexBatchLens{names} = BatchLens{names, PROPERTY, INDEX}
 
-BatchLens{<:Any, objacc, valueacc}(names::Vararg{Symbol}) where {objacc, valueacc} =
-    BatchLens{names, objacc, valueacc}()
+lenstypenameof(::BatchLens{<:Any, PROPERTY, valueacc}) where valueacc =
+    Dict(
+        PROPERTY => :PropertyBatchLens,
+        KEY => :KeyBatchLens,
+        INDEX => :IndexBatchLens,
+    )[valueacc]
 
 Setfield.set(obj, ::BatchLens{names, PROPERTY, INDEX}, val) where names =
     setproperties(obj, NamedTuple{names}(val))
@@ -47,3 +51,9 @@ Setfield.get(obj, lens::BatchLens{<:Any, <:Any, INDEX}) = getastuple(obj, lens)
 Setfield.get(obj, lens::Union{BatchLens{names, <:Any, KEY},
                               BatchLens{names, <:Any, PROPERTY}}) where names =
     NamedTuple{names}(getastuple(obj, lens))
+
+BatchLens{<:Any, objacc, valueacc}(names::Vararg{Symbol}) where {objacc, valueacc} =
+    BatchLens{names, objacc, valueacc}()
+
+Base.show(io::IO, lens::BatchLens{names}) where names =
+    print_apply(io, Prefixed(prefixof(BatchLens), lenstypenameof(lens)), names)

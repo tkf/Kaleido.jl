@@ -3,7 +3,7 @@ module TestBase
 include("preamble.jl")
 using Kaleido: prefer_singleton_callable
 
-lenses_as_shown = include("lenses_as_shown.jl")
+lenses_as_shown = include("lenses_as_shown.jl") :: Array
 desired_show = filter(x -> !occursin(x, "[]"),
                       readlines(joinpath(@__DIR__, "lenses_as_shown.jl")))
 desired_show = strip.(desired_show)
@@ -17,7 +17,6 @@ end
 Base.show(io::IO, case::ShowTestCase) = print(io, case.source)
 
 showtestcases = ShowTestCase.(lenses_as_shown, desired_show, Ref(true))
-@assert length(showtestcases) == 4
 
 @testset "repr" begin
     @testset for case in showtestcases

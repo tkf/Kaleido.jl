@@ -7,10 +7,19 @@ abstract type KaleidoLens <: Lens end
 
 _getfields(obj) = map(n -> getfield(obj, n), fieldnames(typeof(obj))) :: Tuple
 
+struct Prefixed
+    prefix::String
+    name::Symbol
+end
+
+prefixof(f) = join(fullname(parentmodule(f)), '.')
+prefixof(f::Prefixed) = f.prefix
+Base.nameof(f::Prefixed) = f.name
+
 function print_apply(io, f, args)
     if !get(io, :limit, false)
         # Don't show full name in REPL etc.:
-        print(io, join(fullname(parentmodule(f)), '.'), '.')
+        print(io, prefixof(f), '.')
     end
     print(io, nameof(f))
     if length(args) == 1
