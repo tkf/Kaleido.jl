@@ -6,6 +6,7 @@ module Kaleido
 
 export
     BijectionLens,
+    FlatLens,
     IndexBatchLens,
     KeyBatchLens,
     MultiLens,
@@ -20,6 +21,7 @@ using Requires
 include("base.jl")
 include("batchlenses.jl")
 include("multilens.jl")
+include("flatlens.jl")
 include("bijection.jl")
 
 function __init__()

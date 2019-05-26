@@ -25,10 +25,7 @@ julia> @assert set((x=1, y=(z=2,)), ml, ("x", -1)) == (x="x", y=(z=exp(-1),))
 julia> l = MultiLens((
            (@lens _.x) ∘ IndexBatchLens(:a, :b, :c),
            (@lens _.y) ∘ IndexBatchLens(:d, :e),
-       )) ∘ BijectionLens(
-           ((x, y),) -> (x..., y...),
-           xs -> (xs[1:3], xs[4:5]),
-       );
+       )) ∘ FlatLens(3, 2);
 
 julia> @assert get((x=(a=1, b=2, c=3), y=(d=4, e=5)), l) === (1, 2, 3, 4, 5)
 

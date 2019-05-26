@@ -90,3 +90,6 @@ _enumerate(xs) = _zip(ntuple(identity, length(xs)), xs)
 
 _push(xs, x) = (xs..., x)
 _map(f, xs) = _mapfoldl(f, _push, xs, ())
+
+_cat() = ()
+_cat(xs, tuples...) = (xs..., _cat(tuples...)...)
