@@ -5,24 +5,29 @@ end ->
 module Kaleido
 
 export
+    @batchlens,
     BijectionLens,
     FlatLens,
     IndexBatchLens,
     KeyBatchLens,
     MultiLens,
     PropertyBatchLens,
+    batch,
     toℝ₊,
     toℝ₋,
     to𝕀
 
 using Setfield
+using Setfield: ComposedLens, IdentityLens, PropertyLens
 using Requires
 
 include("base.jl")
+include("lensutils.jl")
 include("batchsetters.jl")
 include("batchlenses.jl")
 include("multilens.jl")
 include("flatlens.jl")
+include("batching.jl")
 include("bijection.jl")
 
 function __init__()

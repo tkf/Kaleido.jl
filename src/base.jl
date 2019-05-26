@@ -93,3 +93,26 @@ _map(f, xs) = _mapfoldl(f, _push, xs, ())
 
 _cat() = ()
 _cat(xs, tuples...) = (xs..., _cat(tuples...)...)
+
+headtail(xs) = _headtail(xs...)
+_headtail(x1, xs...) = (x1, xs)
+
+newpartition(x, by) = (
+    key = by(x),
+    values = (x,),
+    by = by,
+)
+
+function partitionby(values::Tuple, by)
+    x, rest = headtail(values)
+    return _foldl(_partitionstep, rest, (newpartition(x, by),))
+end
+
+_partitionstep(partitions, x) =
+    if partitions[end].by(x) == partitions[end].key
+        modify(partitions, @lens _[length(partitions)].values) do values
+            _push(values, x)
+        end
+    else
+        _push(partitions, newpartition(x, partitions[end].by))
+    end

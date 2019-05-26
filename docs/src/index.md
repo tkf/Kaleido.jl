@@ -11,6 +11,8 @@ Kaleido
 ## Setting/getting multiple locations
 
 ```@docs
+Kaleido.@batchlens
+Kaleido.batch
 Kaleido.MultiLens
 Kaleido.PropertyBatchLens
 Kaleido.KeyBatchLens

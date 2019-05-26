@@ -33,3 +33,14 @@ FlatLens(lengths::Vararg{Integer}) = FlatLens{UInt.(lengths)}()
 
 Base.show(io::IO, ::FlatLens{lengths}) where lengths =
     print_apply(io, FlatLens, Int.(lengths))
+
+
+"""
+    SingletonLens()
+
+Inverse of `FlatLens(1)`.
+"""
+struct SingletonLens <: Lens end
+
+Setfield.get(obj, ::SingletonLens) = (obj,)
+Setfield.set(::Any, ::SingletonLens, obj) = obj[1]

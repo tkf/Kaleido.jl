@@ -6,6 +6,7 @@ using Test
         "test_batchlenses.jl"
         "test_flatlens.jl"
         "test_multilens.jl"
+        "test_batching.jl"
         "test_bijection.jl"
         "test_transformvariables.jl"
         ]
