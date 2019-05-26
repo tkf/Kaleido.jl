@@ -76,3 +76,5 @@ const _zip = _Zip
     _mapfoldl(f, op, _tail(xs), op(init, f(xs[1])))
 
 @inline _foldl(op, xs, init) = _mapfoldl(identity, op, xs, init)
+
+_enumerate(xs) = _zip(ntuple(identity, length(xs)), xs)

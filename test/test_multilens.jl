@@ -9,6 +9,16 @@ function test_positional_set(ml)
     @test set((x=1, y=(z=2,)), ml, (:x, "y.z")) === (x=:x, y=(z="y.z",))
     @test set((y=(z=2,), x=1, a=0), ml, ("x", "y.z")) ===
         (y=(z="y.z",), x="x", a=0)
+
+    for val in Any[
+        (10, 20),
+        [10, 20],
+        [10, 20]',
+        SVector(10, 20),
+        SMatrix{1, 2}(10, 20),
+    ]
+        @test set((x=1, y=(z=2,)), ml, val) === (x=10, y=(z=20,))
+    end
 end
 
 @testset "Tuple" begin

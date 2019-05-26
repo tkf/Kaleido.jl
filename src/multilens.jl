@@ -78,8 +78,8 @@ _set(
     ml::MultiLens{N, <:Lenses{N}},
     val::Union{NTuple{N, Any}, AbstractArray}
 ) where N =
-    _foldl(_zip(ml.lenses, val), obj) do obj, (l, v)
-        set(obj, l, v)
+    _foldl(_enumerate(ml.lenses), obj) do obj, (i, l)
+        set(obj, l, val[i])
     end
 
 _set(
