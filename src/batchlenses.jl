@@ -72,13 +72,13 @@ Setfield.set(obj, ::BatchLens{names, PROPERTY, KEY}, val) where names =
 Setfield.set(obj, ::BatchLens{names, PROPERTY, PROPERTY}, val) where names =
     setproperties(obj, NamedTuple{names}(map(n -> getproperty(val, n), names)))
 
-_get(::Val{INDEX}, obj, x) = getindex(obj, x)
-_get(::Val{KEY}, obj, x) = getindex(obj, x)
-_get(::Val{PROPERTY}, obj, x) = getproperty(obj, x)
+_get(::Val{INDEX}, obj, (i, name)) = getindex(obj, i)
+_get(::Val{KEY}, obj, (i, name)) = getindex(obj, name)
+_get(::Val{PROPERTY}, obj, (i, name)) = getproperty(obj, name)
 _get(acc::Accessor, obj) = x -> _get(Val(acc), obj, x)
 
 getastuple(obj, ::BatchLens{names, objacc}) where {names, objacc} =
-    map(_get(objacc, obj), names)
+    _map(_get(objacc, obj), _enumerate(names))
 
 Setfield.get(obj, lens::BatchLens{<:Any, <:Any, INDEX}) = getastuple(obj, lens)
 Setfield.get(obj, lens::Union{BatchLens{names, <:Any, KEY},
