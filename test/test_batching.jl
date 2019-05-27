@@ -3,7 +3,7 @@ module TestBatching
 include("preamble.jl")
 using Kaleido: SingletonLens
 
-lens = @batchlens begin
+lens_created_in_global_scope = @batchlens begin
     _.a.b.c.d
     _.a.b.c.e
     _.a.b.f
@@ -18,42 +18,72 @@ end
         _.a.b.c.e
         _.a.b.f
         _.a.g
-    end) == lens
+    end) == lens_created_in_global_scope
 end
 
-@testset "`batch`ed lenses" begin
-    @test (@batchlens begin
+@testset begin
+    lens = @batchlens begin
         _.a
         _.b
-    end) ==
-        IndexBatchLens(:a, :b)
+    end
 
-    @test (@batchlens begin
+    obj = (a=1, b=2)
+    @test get(obj, lens) == (1, 2)
+    @test set(obj, lens, (10, 20)) == (a=10, b=20)
+
+    @test lens == IndexBatchLens(:a, :b)
+end
+
+@testset begin
+    lens = @batchlens begin
         _.a.b
         _.a.c
-    end) ==
+    end
+
+    obj = (a=(b=1, c=2),)
+    @test get(obj, lens) == (1, 2)
+    @test set(obj, lens, (10, 20)) == (a=(b=10, c=20),)
+
+    @test lens ==
         IndexBatchLens(:a) ∘ MultiLens((
             (@lens _[1]) ∘ IndexBatchLens(:b, :c),
         )) ∘ FlatLens(2)
+end
 
-    @test (@batchlens begin
+@testset begin
+    lens = @batchlens begin
         _.a.b.c
         _.a.b.d
         _.a.e
-    end) ==
+    end
+
+    obj = (a=(b=(c=1, d=2), e=3),)
+    @test get(obj, lens) == (1, 2, 3)
+    @test set(obj, lens, (10, 20, 30)) == (a=(b=(c=10, d=20), e=30),)
+
+    @test lens ==
         IndexBatchLens(:a) ∘ MultiLens((
             (@lens _[1]) ∘ IndexBatchLens(:b, :e) ∘ MultiLens((
                 (@lens _[1]) ∘ IndexBatchLens(:c, :d),
                 (@lens _[2]) ∘ Kaleido.SingletonLens(),
             )) ∘ FlatLens(2, 1),
         )) ∘ FlatLens(3)
+end
 
-    @test (@batchlens begin
+@testset begin
+    lens = @batchlens begin
         _.a.b.c.d
         _.a.b.c.e
         _.a.b.f
         _.a.g
-    end) ==
+    end
+
+    obj = (a=(b=(c=(d=1, e=2), f=3), g=4),)
+    @test get(obj, lens) == (1, 2, 3, 4)
+    @test set(obj, lens, (10, 20, 30, 40)) ==
+        (a=(b=(c=(d=10, e=20), f=30), g=40),)
+
+    @test lens ==
         IndexBatchLens(:a) ∘ MultiLens((
             (@lens _[1]) ∘ IndexBatchLens(:b, :g) ∘ MultiLens((
                 (@lens _[1]) ∘ IndexBatchLens(:c, :f) ∘ MultiLens((
@@ -63,13 +93,22 @@ end
                 (@lens _[2]) ∘ SingletonLens(),
             )) ∘ FlatLens(3, 1),
         )) ∘ FlatLens(4)
+end
 
-    @test (@batchlens begin
+@testset begin
+    lens = @batchlens begin
         _.a.b.c
         _.a.b.d[1]
         _.a.b.d[3]
         _.a.e
-    end) ==
+    end
+
+    obj = (a=(b=(c=1, d=(2, 3, 4)), e=5),)
+    @test get(obj, lens) == (1, 2, 4, 5)
+    @test set(obj, lens, (10, 20, 40, 50)) ==
+        (a=(b=(c=10, d=(20, 3, 40)), e=50),)
+
+    @test lens ==
         IndexBatchLens(:a) ∘ MultiLens((
             (@lens _[1]) ∘ IndexBatchLens(:b, :e) ∘ MultiLens((
                 (@lens _[1]) ∘ IndexBatchLens(:c, :d) ∘ MultiLens((
