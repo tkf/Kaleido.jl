@@ -162,6 +162,10 @@ end
     @test_broken set(obj, lens, (10, 20, 50, 30, 40)) ==
         (a=(b=(c=10, d=20, f=30, g=40), e=50),)
 
+    # This should work but it's better to make sure it throws for now
+    # rather than silently failing:
+    @test_throws Exception set(obj, lens, (10, 20, 50, 30, 40))
+
     @test lens ==
         IndexBatchLens(:a) ∘ MultiLens((
             (@lens _[1]) ∘
