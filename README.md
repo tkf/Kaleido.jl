@@ -8,7 +8,10 @@
 
 Kaleido.jl is a collection of useful
 [`Lens`](https://jw3126.github.io/Setfield.jl/latest/index.html#Setfield.Lens)es
-that enhance [Setfield.jl](https://github.com/jw3126/Setfield.jl).
+and helper functions/macros built on top of
+[Setfield.jl](https://github.com/jw3126/Setfield.jl).  For example, it
+provides a macro `@batchlens` to update various nested locations in a
+complex immutable object:
 
 ```julia
 julia> using Setfield, Kaleido
@@ -27,24 +30,36 @@ julia> get(obj, lens)
 
 julia> set(obj, lens, (10, 20, Inf, 50))
 (a = (b = (c = 10, d = (20, 3, 1.0)), e = 50),)
+```
 
-julia> ml = MultiLens((
+Behind the scene, `@batchlens` composes various `Lens`es from
+Setfield.jl and Kaleido.jl to do its job.  Those lenses are also
+useful by themselves.  For example, the lens `to𝕀` above (the naming
+is borrowed from TransformVariables.jl) can be used to access a
+property/field/location of an object using different parametrization.
+Those lenses can be composed manually for accessing and modifying of
+immutable object in more flexible manner.
+
+```julia
+julia> using Setfield, Kaleido
+
+julia> lens = MultiLens((
            (@lens _.x),
            (@lens _.y.z) ∘ toℝ₊,
        ));
 
-julia> @assert get((x=1, y=(z=1.0,)), ml) == (1, 0.0)
+julia> @assert get((x=1, y=(z=1.0,)), lens) == (1, 0.0)
 
-julia> @assert set((x=1, y=(z=2,)), ml, ("x", -1)) == (x="x", y=(z=exp(-1),))
+julia> @assert set((x=1, y=(z=2,)), lens, ("x", -1)) == (x="x", y=(z=exp(-1),))
 
-julia> l = MultiLens((
+julia> lens = MultiLens((
            (@lens _.x) ∘ IndexBatchLens(:a, :b, :c),
            (@lens _.y) ∘ IndexBatchLens(:d, :e),
        )) ∘ FlatLens(3, 2);
 
-julia> @assert get((x=(a=1, b=2, c=3), y=(d=4, e=5)), l) === (1, 2, 3, 4, 5)
+julia> @assert get((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens) === (1, 2, 3, 4, 5)
 
-julia> @assert set((x=(a=1, b=2, c=3), y=(d=4, e=5)), l, (10, 20, 30, 40, 50)) ===
+julia> @assert set((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens, (10, 20, 30, 40, 50)) ===
            (x=(a=10, b=20, c=30), y=(d=40, e=50))
 ```
 
@@ -54,11 +69,11 @@ Kaleido.jl also works with `AbstractTransform` defined in
 ```julia
 julia> using Setfield, Kaleido, TransformVariables
 
-julia> l = (@lens _.y[2]) ∘ BijectionLens(as𝕀);
+julia> lens = (@lens _.y[2]) ∘ BijectionLens(as𝕀);
 
 julia> obj = (x=0, y=(1, 0.5, 3));
 
-julia> @assert get(obj, l) == 0
+julia> @assert get(obj, lens) == 0
 
-julia> @assert set(obj, l, Inf).y[2] ≈ 1
+julia> @assert set(obj, lens, Inf).y[2] ≈ 1
 ```
