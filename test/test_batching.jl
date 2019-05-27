@@ -63,6 +63,23 @@ end
                 (@lens _[2]) ∘ SingletonLens(),
             )) ∘ FlatLens(3, 1),
         )) ∘ FlatLens(4)
+
+    @test (@batchlens begin
+        _.a.b.c
+        _.a.b.d[1]
+        _.a.b.d[3]
+        _.a.e
+    end) ==
+        IndexBatchLens(:a) ∘ MultiLens((
+            (@lens _[1]) ∘ IndexBatchLens(:b, :e) ∘ MultiLens((
+                (@lens _[1]) ∘ IndexBatchLens(:c, :d) ∘ MultiLens((
+                    (@lens _[1]) ∘ Kaleido.SingletonLens(),
+                    (@lens _[2]) ∘ MultiLens((
+                        (@lens _[1]), (@lens _[3]),
+                    )),
+                )) ∘ FlatLens(1, 2),
+                (@lens _[2]) ∘ Kaleido.SingletonLens())) ∘ FlatLens(3, 1),
+        )) ∘ FlatLens(4)
 end
 
 end  # module

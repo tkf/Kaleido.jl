@@ -13,6 +13,21 @@ that enhance [Setfield.jl](https://github.com/jw3126/Setfield.jl).
 ```julia
 julia> using Setfield, Kaleido
 
+julia> lens = @batchlens begin
+           _.a.b.c
+           _.a.b.d[1]
+           _.a.b.d[3]
+           _.a.e
+       end;
+
+julia> obj = (a = (b = (c = 1, d = (2, 3, 4)), e = 5),);
+
+julia> get(obj, lens)
+(1, 2, 4, 5)
+
+julia> set(obj, lens, (10, 20, 40, 50))
+(a = (b = (c = 10, d = (20, 3, 40)), e = 50),)
+
 julia> ml = MultiLens((
            (@lens _.x),
            (@lens _.y.z) ∘ toℝ₊,

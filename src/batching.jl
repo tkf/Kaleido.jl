@@ -30,7 +30,7 @@ batch(::IdentityLens) = SingletonLens()
 batch(lenses::PropertyLens...) = IndexBatchLens(propname.(lenses)...)
 
 function batch(lenses::Lens...)
-    allstartswithproperty(lenses) || return MultiLens(lenses...)
+    allstartswithproperty(lenses) || return MultiLens(lenses)
     partitions = partitionby(lenses, leftmost)
     propnames = _map(x -> propname(x.key), partitions)
     sublenses = _map(x -> rightlens.(x.values), partitions)
