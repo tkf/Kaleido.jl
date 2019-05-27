@@ -94,9 +94,25 @@ macro batchlens(lenses_expression)
     return esc(Expr(:call, batch, lens_exprs...))
 end
 
+islensexpr(ex::Symbol) = ex == :_
+islensexpr(ex::Expr) = ex.head in (:., :ref) && islensexpr(ex.args[1])
+
 function make_lens_expr(ex::Expr, lnn::LineNumberNode)
-    atlens = Expr(:., Setfield, QuoteNode(Symbol("@lens")))
-    # Make `:(Setfield.@lens $ex)` with a proper `LineNumberNode`:
-    return Expr(:macrocall, atlens, lnn, ex)
+    if !(islensexpr(ex) || (ex.head == :call && ex.args[1] == :∘))
+        error("Not a lens expression: $ex")
+    end
+    return _make_lens_expr(ex, lnn)
 end
-# TODO: handle ∘
+
+_make_lens_expr(ex::Symbol, lnn::LineNumberNode) = ex
+function _make_lens_expr(ex::Expr, lnn::LineNumberNode)
+    if islensexpr(ex)
+        # Make `:(Setfield.@lens $ex)` with a proper `LineNumberNode`:
+        atlens = Expr(:., Setfield, QuoteNode(Symbol("@lens")))
+        return Expr(:macrocall, atlens, lnn, ex)
+    elseif ex.head == :call && ex.args[1] == :∘
+        return Expr(:call, :∘, _make_lens_expr.(ex.args[2:end], Ref(lnn))...)
+    else
+        return ex
+    end
+end

@@ -124,6 +124,33 @@ end
 @testset begin
     lens = @batchlens begin
         _.a.b.c
+        _.a.b.d[1]
+        _.a.b.d[3] ∘ to𝕀
+        _.a.e
+    end
+
+    obj = (a = (b = (c = 1, d = (2, 3, 0.5)), e = 5),)
+    @test get(obj, lens) == (1, 2, 0.0, 5)
+    @test set(obj, lens, (10, 20, Inf, 50)) ==
+        (a = (b = (c = 10, d = (20, 3, 1.0)), e = 50),)
+
+    @test lens ==
+        IndexBatchLens(:a) ∘ MultiLens((
+            (@lens _[1]) ∘ IndexBatchLens(:b, :e) ∘ MultiLens((
+                (@lens _[1]) ∘ IndexBatchLens(:c, :d) ∘ MultiLens((
+                    (@lens _[1]) ∘ Kaleido.SingletonLens(),
+                    (@lens _[2]) ∘ MultiLens((
+                        (@lens _[1]),
+                        (@lens _[3]) ∘ to𝕀,
+                    )))) ∘ FlatLens(1, 2),
+                (@lens _[2]) ∘ Kaleido.SingletonLens(),
+            )) ∘ FlatLens(3, 1),
+        )) ∘ FlatLens(4)
+end
+
+@testset begin
+    lens = @batchlens begin
+        _.a.b.c
         _.a.b.d
         _.a.e
         _.a.b.f
