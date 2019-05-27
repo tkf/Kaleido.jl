@@ -121,4 +121,30 @@ end
         )) ∘ FlatLens(4)
 end
 
+@testset begin
+    lens = @batchlens begin
+        _.a.b.c
+        _.a.b.d
+        _.a.e
+        _.a.b.f
+        _.a.b.g
+    end
+
+    obj = (a=(b=(c=1, d=2, f=3, g=4), e=5),)
+    @test get(obj, lens) == (1, 2, 5, 3, 4)
+    @test_broken set(obj, lens, (10, 20, 50, 30, 40)) ==
+        (a=(b=(c=10, d=20, f=30, g=40), e=50),)
+
+    @test lens ==
+        IndexBatchLens(:a) ∘ MultiLens((
+            (@lens _[1]) ∘
+            IndexBatchLens(:b, :e, :b) ∘  # TODO: this is wrong; fix it
+            MultiLens((
+                (@lens _[1]) ∘ IndexBatchLens(:c, :d),
+                (@lens _[2]) ∘ Kaleido.SingletonLens(),
+                (@lens _[3]) ∘ IndexBatchLens(:f, :g)
+            )) ∘ FlatLens(2, 1, 2),
+        )) ∘ FlatLens(5)
+end
+
 end  # module
