@@ -21,7 +21,7 @@ end
     end) == lens_created_in_global_scope
 end
 
-@testset begin
+@testset "1st level" begin
     lens = @batchlens begin
         _.a
         _.b
@@ -34,7 +34,7 @@ end
     @test lens == IndexBatchLens(:a, :b)
 end
 
-@testset begin
+@testset "2nd level" begin
     lens = @batchlens begin
         _.a.b
         _.a.c
@@ -50,7 +50,7 @@ end
         )) ∘ FlatLens(2)
 end
 
-@testset begin
+@testset "3rd level" begin
     lens = @batchlens begin
         _.a.b.c
         _.a.b.d
@@ -70,7 +70,7 @@ end
         )) ∘ FlatLens(3)
 end
 
-@testset begin
+@testset "4th level" begin
     lens = @batchlens begin
         _.a.b.c.d
         _.a.b.c.e
@@ -95,7 +95,7 @@ end
         )) ∘ FlatLens(4)
 end
 
-@testset begin
+@testset "mixing indexing" begin
     lens = @batchlens begin
         _.a.b.c
         _.a.b.d[1]
@@ -121,7 +121,7 @@ end
         )) ∘ FlatLens(4)
 end
 
-@testset begin
+@testset "inline composition" begin
     lens = @batchlens begin
         _.a.b.c
         _.a.b.d[1]
@@ -148,7 +148,7 @@ end
         )) ∘ FlatLens(4)
 end
 
-@testset begin
+@testset "unsorted" begin
     lens = @batchlens begin
         _.a.b.c
         _.a.b.d
