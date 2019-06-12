@@ -23,7 +23,7 @@ Kaleido.FlatLens
 ## Bijective transformations as lenses
 
 ```@docs
-Kaleido.BijectionLens
+Kaleido.converting
 Kaleido.setting
 Kaleido.getting
 Kaleido.settingasℝ₊

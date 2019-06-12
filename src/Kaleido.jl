@@ -6,13 +6,13 @@ module Kaleido
 
 export
     @batchlens,
-    BijectionLens,
     FlatLens,
     IndexBatchLens,
     KeyBatchLens,
     MultiLens,
     PropertyBatchLens,
     batch,
+    converting,
     getting,
     gettingasℝ₊,
     gettingasℝ₋,

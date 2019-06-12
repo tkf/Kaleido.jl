@@ -1,11 +1,11 @@
 """
-    BijectionLens(fromfield, tofield) :: Lens
+    converting(; fromfield, tofield) :: Lens
 
 # Examples
 ```jldoctest
 julia> using Setfield, Kaleido
 
-julia> l = (@lens _.y[2]) ∘ BijectionLens(x -> x/2, x -> 2x);
+julia> l = (@lens _.y[2]) ∘ converting(fromfield = x -> x/2, tofield = x -> 2x);
 
 julia> obj = (x=0, y=(1, 2, 3));
 
@@ -14,7 +14,7 @@ julia> @assert get(obj, l) == 1.0 == 2/2
 julia> @assert set(obj, l, 0.5) == (x=0, y=(1, 1.0, 3))
 ```
 """
-BijectionLens
+converting
 
 """
     setting(xf::TransformVariables.AbstractTransform) :: Lens
@@ -68,6 +68,8 @@ Setfield.get(obj, l::BijectionLens) = fromfield(l.bijection, obj)
 Setfield.set(::Any, l::BijectionLens, x) = tofield(l.bijection, x)
 
 BijectionLens(fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofield))
+
+converting(; fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofield))
 
 setting(thing) = BijectionLens(Bijection(thing))
 getting(thing) = BijectionLens(inv(Bijection(thing)))

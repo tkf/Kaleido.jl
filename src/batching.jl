@@ -94,7 +94,7 @@ julia> using Kaleido, Setfield
 
 julia> lens = @batchlens begin
            _.a.b.c
-           _.a.b.d ∘ BijectionLens(x -> parse(Int, x), string)
+           _.a.b.d ∘ converting(fromfield = x -> parse(Int, x), tofield = string)
            _.a.e
        end;
 

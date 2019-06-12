@@ -1,7 +1,7 @@
 module TestBase
 
 include("preamble.jl")
-using Kaleido: prefer_singleton_callable
+using Kaleido: prefer_singleton_callable, BijectionLens
 
 lenses_as_shown = include("lenses_as_shown.jl") :: Array
 desired_show = filter(x -> !occursin(x, "[]"),
