@@ -21,7 +21,7 @@ julia> using Setfield, Kaleido
 julia> lens = @batchlens begin
            _.a.b.c
            _.a.b.d[1]
-           _.a.b.d[3] ∘ to𝕀
+           _.a.b.d[3] ∘ settingas𝕀
            _.a.e
        end;
 
@@ -36,7 +36,7 @@ julia> set(obj, lens, (10, 20, Inf, 50))
 
 Behind the scene, `@batchlens` composes various `Lens`es from
 Setfield.jl and Kaleido.jl to do its job.  Those lenses are also
-useful by themselves.  For example, the lens `to𝕀` above (the naming
+useful by themselves.  For example, the lens `settingas𝕀` above (the naming
 is borrowed from TransformVariables.jl) can be used to access a
 property/field/location of an object using different parametrization.
 Those lenses can be composed manually for accessing and modifying of
@@ -47,7 +47,7 @@ julia> using Setfield, Kaleido
 
 julia> lens = MultiLens((
            (@lens _.x),
-           (@lens _.y.z) ∘ toℝ₊,
+           (@lens _.y.z) ∘ settingasℝ₊,
        ));
 
 julia> @assert get((x=1, y=(z=1.0,)), lens) == (1, 0.0)
@@ -71,7 +71,7 @@ Kaleido.jl also works with `AbstractTransform` defined in
 ```julia
 julia> using Setfield, Kaleido, TransformVariables
 
-julia> lens = (@lens _.y[2]) ∘ BijectionLens(as𝕀);
+julia> lens = (@lens _.y[2]) ∘ setting(as𝕀);
 
 julia> obj = (x=0, y=(1, 0.5, 3));
 

@@ -24,7 +24,9 @@ Kaleido.FlatLens
 
 ```@docs
 Kaleido.BijectionLens
-Kaleido.toℝ₊
-Kaleido.toℝ₋
-Kaleido.to𝕀
+Kaleido.setting
+Kaleido.getting
+Kaleido.settingasℝ₊
+Kaleido.settingasℝ₋
+Kaleido.settingas𝕀
 ```

@@ -125,7 +125,7 @@ end
     lens = @batchlens begin
         _.a.b.c
         _.a.b.d[1]
-        _.a.b.d[3] ∘ to𝕀
+        _.a.b.d[3] ∘ settingas𝕀
         _.a.e
     end
 
@@ -141,7 +141,7 @@ end
                     (@lens _[1]) ∘ Kaleido.SingletonLens(),
                     (@lens _[2]) ∘ MultiLens((
                         (@lens _[1]),
-                        (@lens _[3]) ∘ to𝕀,
+                        (@lens _[3]) ∘ settingas𝕀,
                     )))) ∘ FlatLens(1, 2),
                 (@lens _[2]) ∘ Kaleido.SingletonLens(),
             )) ∘ FlatLens(3, 1),

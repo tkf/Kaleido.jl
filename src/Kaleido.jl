@@ -13,9 +13,14 @@ export
     MultiLens,
     PropertyBatchLens,
     batch,
-    toℝ₊,
-    toℝ₋,
-    to𝕀
+    getting,
+    gettingasℝ₊,
+    gettingasℝ₋,
+    gettingas𝕀,
+    setting,
+    settingasℝ₊,
+    settingasℝ₋,
+    settingas𝕀
 
 using Setfield
 using Setfield: ComposedLens, IdentityLens, PropertyLens
