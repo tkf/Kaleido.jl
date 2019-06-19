@@ -37,7 +37,7 @@ julia> @assert set(obj, l, Inf).y[2] ≈ 1
 julia> @assert set(obj, l, -Inf).y[2] ≈ 0.0
 ```
 """
-setting
+function setting end
 
 """
     getting(xf::TransformVariables.AbstractTransform) :: Lens
@@ -45,7 +45,7 @@ setting
 Lens to get value transformed by `xf` (and set value via the inverse
 transformation).
 """
-getting
+function getting end
 
 abstract type Bijection end
 
@@ -71,8 +71,8 @@ BijectionLens(fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofiel
 
 converting(; fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofield))
 
-setting(thing) = BijectionLens(Bijection(thing))
-getting(thing) = BijectionLens(inv(Bijection(thing)))
+_setting(thing) = BijectionLens(Bijection(thing))
+_getting(thing) = BijectionLens(inv(Bijection(thing)))
 
 Base.show(io::IO, lens::BijectionLens{<:FunctionPair}) =
     print_apply(io, typeof(lens), _getfields(lens.bijection))

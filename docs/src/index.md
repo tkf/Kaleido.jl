@@ -34,5 +34,6 @@ Kaleido.settingas𝕀
 ## Misc
 
 ```@docs
+Kaleido.getting(::Any)
 Kaleido.constraining
 ```

@@ -35,6 +35,7 @@ include("multilens.jl")
 include("flatlens.jl")
 include("batching.jl")
 include("bijection.jl")
+include("converterlens.jl")
 include("constraininglens.jl")
 
 function __init__()
