@@ -1,15 +1,8 @@
 module TestKaleido
 using Test
 
-@testset "$file" for file in [
-        "test_base.jl"
-        "test_batchlenses.jl"
-        "test_flatlens.jl"
-        "test_multilens.jl"
-        "test_batching.jl"
-        "test_bijection.jl"
-        "test_transformvariables.jl"
-        ]
+@testset "$file" for file in sort([file for file in readdir(@__DIR__) if
+                                   match(r"^test_.*\.jl$", file) !== nothing])
     include(file)
 end
 

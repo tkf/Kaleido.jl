@@ -30,3 +30,9 @@ Kaleido.settingasℝ₊
 Kaleido.settingasℝ₋
 Kaleido.settingas𝕀
 ```
+
+## Misc
+
+```@docs
+Kaleido.constraining
+```
