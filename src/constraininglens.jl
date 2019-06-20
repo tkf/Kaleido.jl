@@ -27,6 +27,30 @@ julia> get(obj, lens)
 julia> set(obj, lens, 2)
 (a = 2, b = 2)
 ```
+
+`constraining` is useful when combined with [`@batchlens`](@ref) or
+[`MultiLens`](@ref):
+
+```jldoctest
+julia> using Kaleido, Setfield
+
+julia> obj = (a = 1, b = 2, c = 3);
+
+julia> constraint = constraining() do obj
+           @set obj.c = obj.a + obj.b
+       end;
+
+julia> lens = constraint ∘ MultiLens((
+           (@lens _.a),
+           (@lens _.b),
+       ));
+
+julia> get(obj, lens)
+(1, 2)
+
+julia> set(obj, lens, (100, 20))
+(a = 100, b = 20, c = 120)
+```
 """
 constraining(f; onget=true, onset=true) =
     ConstrainingLens(prefer_singleton_callable(f), asval(onget), asval(onset))
