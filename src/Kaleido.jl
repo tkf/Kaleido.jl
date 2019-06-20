@@ -6,6 +6,7 @@ module Kaleido
 
 export
     @batchlens,
+    FLens,
     FlatLens,
     IndexBatchLens,
     KeyBatchLens,
@@ -37,6 +38,7 @@ include("batching.jl")
 include("bijection.jl")
 include("converterlens.jl")
 include("constraininglens.jl")
+include("functorlens.jl")
 
 function __init__()
     @require(TransformVariables="84d833dd-6860-57f9-a1a7-6da5db126cff",

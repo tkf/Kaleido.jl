@@ -36,4 +36,5 @@ Kaleido.settingas𝕀
 ```@docs
 Kaleido.getting(::Any)
 Kaleido.constraining
+Kaleido.FLens
 ```
