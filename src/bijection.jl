@@ -108,8 +108,8 @@ julia> @assert get(obj, l) == 0.0 == log(obj.y[2])
 julia> @assert set(obj, l, -1) == (x=0, y=(0, exp(-1), 2))
 ```
 """
-const settingasℝ₊ = BijectionLens(log, exp)
-const gettingasℝ₊ = BijectionLens(exp, log)
+const settingasℝ₊ = converting(fromfield=log, tofield=exp)
+const gettingasℝ₊ = converting(fromfield=exp, tofield=log)
 
 """
     settingasℝ₋ :: BijectionLens
@@ -130,8 +130,8 @@ julia> @assert get(obj, l) == 0.0 == log(-obj.y[2])
 julia> @assert set(obj, l, 1) == (x=0, y=(0, -exp(1), 2))
 ```
 """
-const settingasℝ₋ = BijectionLens(logneg, negexp)
-const gettingasℝ₋ = BijectionLens(negexp, logneg)
+const settingasℝ₋ = converting(fromfield=logneg, tofield=negexp)
+const gettingasℝ₋ = converting(fromfield=negexp, tofield=logneg)
 
 """
     settingas𝕀 :: BijectionLens
@@ -154,5 +154,5 @@ julia> @assert set(obj, l, Inf).y[2] ≈ 1
 julia> @assert set(obj, l, -Inf).y[2] ≈ 0
 ```
 """
-const settingas𝕀 = BijectionLens(logit, logistic)
-const gettingas𝕀 = BijectionLens(logistic, logit)
+const settingas𝕀 = converting(fromfield=logit, tofield=logistic)
+const gettingas𝕀 = converting(fromfield=logistic, tofield=logit)
