@@ -87,8 +87,8 @@ negexp(x) = -exp(x)
 """
     settingasℝ₊ :: BijectionLens
 
-This is a stripped-down version of `BijectionLens(TransformVariables.asℝ₊)`
-that works without TransformVariables.jl.
+This is a stripped-down version of `setting(asℝ₊)` that works without
+TransformVariables.jl.
 
 # Examples
 ```jldoctest
@@ -109,8 +109,8 @@ const gettingasℝ₊ = BijectionLens(exp, log)
 """
     settingasℝ₋ :: BijectionLens
 
-This is a stripped-down version of `BijectionLens(TransformVariables.asℝ₋)`
-that works without TransformVariables.jl.
+This is a stripped-down version of `setting(asℝ₋)` that works without
+TransformVariables.jl.
 
 # Examples
 ```jldoctest
@@ -131,8 +131,8 @@ const gettingasℝ₋ = BijectionLens(negexp, logneg)
 """
     settingas𝕀 :: BijectionLens
 
-This is a stripped-down version of `BijectionLens(TransformVariables.as𝕀)`
-that works without TransformVariables.jl.
+This is a stripped-down version of `setting(as𝕀)` that works without
+TransformVariables.jl.
 
 # Examples
 ```jldoctest
