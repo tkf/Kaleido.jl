@@ -68,8 +68,13 @@ Setfield.get(obj, l::BijectionLens) = fromfield(l.bijection, obj)
 Setfield.set(::Any, l::BijectionLens, x) = tofield(l.bijection, x)
 
 BijectionLens(fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofield))
+# TODO: remove `BijectionLens(fromfield, tofield)`
 
-converting(; fromfield, tofield) = BijectionLens(FunctionPair(fromfield, tofield))
+converting(; fromfield, tofield) =
+    BijectionLens(FunctionPair(
+        prefer_singleton_callable(fromfield),
+        prefer_singleton_callable(tofield),
+    ))
 
 _setting(thing) = BijectionLens(Bijection(thing))
 _getting(thing) = BijectionLens(inv(Bijection(thing)))
