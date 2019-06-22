@@ -11,14 +11,30 @@
 Kaleido.jl is a collection of useful
 [`Lens`](https://jw3126.github.io/Setfield.jl/latest/index.html#Setfield.Lens)es
 and helper functions/macros built on top of
-[Setfield.jl](https://github.com/jw3126/Setfield.jl).  For example, it
-provides a macro `@batchlens` to update various nested locations in a
+[Setfield.jl](https://github.com/jw3126/Setfield.jl).
+
+## Features
+
+### Summary
+
+* Batched/multi-valued update.  See `@batchlens`, `MultiLens`.
+* Get/set multiple and nested fields as a `StaticArray` or any
+  arbitrary multi-valued container.  See `getting`.
+* Get/set fields with different parametrizations.
+  See `converting`, `setting`, `getting`.
+* Computing other fields during `set` and `get`; i.e., adding
+  constraints between fields.  See `constraining`.
+* Get/set dynamically computed locations.  See `FLens`.
+
+### Batched/multi-valued update
+
+Macro `@batchlens` can be used to update various nested locations in a
 complex immutable object:
 
 ```julia
 julia> using Setfield, Kaleido
 
-julia> lens = @batchlens begin
+julia> lens_batch = @batchlens begin
            _.a.b.c
            _.a.b.d[1]
            _.a.b.d[3] ∘ settingas𝕀
@@ -27,51 +43,56 @@ julia> lens = @batchlens begin
 
 julia> obj = (a = (b = (c = 1, d = (2, 3, 0.5)), e = 5),);
 
-julia> get(obj, lens)
+julia> get(obj, lens_batch)
 (1, 2, 0.0, 5)
 
-julia> set(obj, lens, (10, 20, Inf, 50))
+julia> set(obj, lens_batch, (10, 20, Inf, 50))
 (a = (b = (c = 10, d = (20, 3, 1.0)), e = 50),)
 ```
 
-Behind the scene, `@batchlens` composes various `Lens`es from
-Setfield.jl and Kaleido.jl to do its job.  Those lenses are also
-useful by themselves.  For example, the lens `settingas𝕀` above (the naming
-is borrowed from TransformVariables.jl) can be used to access a
-property/field/location of an object using different parametrization.
-Those lenses can be composed manually for accessing and modifying of
-immutable object in more flexible manner.
+(See below for what `settingas𝕀` does.)
+
+### Get/set multiple and nested fields as a `StaticArray`
+
+It is often useful to get the values of the fields as a vector (e.g.,
+when optimizing a composite object with Optim.jl).  This can be done
+with `getting(f)` where `f` is a constructor.
 
 ```julia
-julia> using Setfield, Kaleido
+julia> using StaticArrays
 
-julia> lens = MultiLens((
-           (@lens _.x),
-           (@lens _.y.z) ∘ settingasℝ₊,
-       ));
+julia> lens_vec = lens_batch ∘ getting(SVector);
 
-julia> get((x=1, y=(z=1.0,)), lens)
-(1, 0.0)
+julia> @assert get(obj, lens_vec) === SVector(1, 2, 0.0, 5)
 
-julia> @assert set((x=1, y=(z=2,)), lens, ("x", -1)) === (x="x", y=(z=exp(-1),))
+julia> set(obj, lens_vec, SVector(10, 20, Inf, 50))
+(a = (b = (c = 10.0, d = (20.0, 3, 1.0)), e = 50.0),)
+```
 
-julia> lens = MultiLens((
-           (@lens _.x) ∘ IndexBatchLens(:a, :b, :c),
-           (@lens _.y) ∘ IndexBatchLens(:d, :e),
-       )) ∘ FlatLens(3, 2);
+### Get/set fields with different parametrizations
 
-julia> get((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens)
-(1, 2, 3, 4, 5)
+Kaleido.jl comes with lenses `settingasℝ₊`, `settingasℝ₋`, and
+`settingas𝕀` to manipulating fields that have to be restricted to be
+positive, negative, and in `[0, 1]` interval, respectively.  Similarly
+there are lenses `gettingasℝ₊`, `gettingasℝ₋`, and `gettingas𝕀` to get
+values in those domains.  The naming is borrowed from
+[TransformVariables.jl](https://github.com/tpapp/TransformVariables.jl).
 
-julia> set((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens, (10, 20, 30, 40, 50))
-(x = (a = 10, b = 20, c = 30), y = (d = 40, e = 50))
+```julia
+julia> lens = (@lens _.x) ∘ settingasℝ₊;
+
+julia> get((x=1.0,), lens)  # log(1.0)
+0.0
+
+julia> set((x=1.0,), lens, -Inf)
+(x = 0.0,)
 ```
 
 Kaleido.jl also works with `AbstractTransform` defined in
 [TransformVariables.jl](https://github.com/tpapp/TransformVariables.jl):
 
 ```julia
-julia> using Setfield, Kaleido, TransformVariables
+julia> using TransformVariables
 
 julia> lens = (@lens _.y[2]) ∘ setting(as𝕀);
 
@@ -82,3 +103,51 @@ julia> get(obj, lens)
 
 julia> @assert set(obj, lens, Inf).y[2] ≈ 1
 ```
+
+It also is quite easy to define ad-hoc converting accessors using
+`converting`:
+
+```julia
+julia> lens = (@lens _.y[2]) ∘
+           converting(fromfield=x -> parse(Int, x), tofield=string);
+
+julia> obj = (x=0, y=(1, "5", 3));
+
+julia> get(obj, lens)
+5
+
+julia> set(obj, lens, 1)
+(x = 0, y = (1, "1", 3))
+```
+
+### Computing other fields during `set` and `get`
+
+It is easy to add constraints between fields using `constraining`.
+For example, you can impose that field `.c` must be a sum of `.a` and
+`.b` by:
+
+```julia
+julia> obj = (a = 1, b = 2, c = 3);
+
+julia> constraint = constraining() do obj
+           @set obj.c = obj.a + obj.b
+       end;
+
+julia> lens = constraint ∘ MultiLens((
+           (@lens _.a),
+           (@lens _.b),
+       ));
+
+julia> get(obj, lens)
+(1, 2)
+
+julia> set(obj, lens, (100, 20))
+(a = 100, b = 20, c = 120)
+```
+
+Notice that `.c` is updated as well in the last line.
+
+### Get/set dynamically computed locations
+
+You can use `FLens` to `get` and `set`, e.g., the last entry of a
+linked list.
