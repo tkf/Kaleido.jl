@@ -11,20 +11,25 @@ julia> ml = MultiLens((
            (@lens _.y.z),
        ));
 
-julia> @assert get((x=1, y=(z=2,)), ml) === (1, 2)
+julia> get((x=1, y=(z=2,)), ml)
+(1, 2)
 
-julia> @assert set((x=1, y=(z=2,)), ml, ("x", "y.z")) === (x="x", y=(z="y.z",))
+julia> set((x=1, y=(z=2,)), ml, ("x", "y.z"))
+(x = "x", y = (z = "y.z",))
 
 julia> ml = MultiLens((
            a = (@lens _.x),
            b = (@lens _.y.z),
        ));
 
-julia> @assert get((x=1, y=(z=2,)), ml) === (a=1, b=2)
+julia> get((x=1, y=(z=2,)), ml)
+(a = 1, b = 2)
 
-julia> @assert set((x=1, y=(z=2,)), ml, (a=:x, b="y.z")) === (x=:x, y=(z="y.z",))
+julia> set((x=1, y=(z=2,)), ml, (a=:x, b="y.z"))
+(x = :x, y = (z = "y.z",))
 
-julia> @assert set((x=1, y=(z=2,)), ml, (b="y.z", a=:x)) === (x=:x, y=(z="y.z",))
+julia> set((x=1, y=(z=2,)), ml, (b="y.z", a=:x))
+(x = :x, y = (z = "y.z",))
 
 julia> using StaticArrays
 

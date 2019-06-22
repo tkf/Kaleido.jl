@@ -11,7 +11,8 @@ julia> obj = (x=0, y=(1, 2, 3));
 
 julia> @assert get(obj, l) == 1.0 == 2/2
 
-julia> @assert set(obj, l, 0.5) == (x=0, y=(1, 1.0, 3))
+julia> set(obj, l, 0.5)
+(x = 0, y = (1, 1.0, 3))
 ```
 """
 converting
@@ -30,7 +31,8 @@ julia> l = (@lens _.y[2]) ∘ setting(as𝕀);
 
 julia> obj = (x=0, y=(1, 0.5, 3));
 
-julia> @assert get(obj, l) == 0
+julia> get(obj, l)
+0.0
 
 julia> @assert set(obj, l, Inf).y[2] ≈ 1
 
@@ -147,7 +149,8 @@ julia> l = (@lens _.y[2]) ∘ settingas𝕀;
 
 julia> obj = (x=0, y=(0, 0.5, 2));
 
-julia> @assert get(obj, l) == 0.0
+julia> get(obj, l)
+0.0
 
 julia> @assert set(obj, l, Inf).y[2] ≈ 1
 

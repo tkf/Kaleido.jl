@@ -50,19 +50,21 @@ julia> lens = MultiLens((
            (@lens _.y.z) ∘ settingasℝ₊,
        ));
 
-julia> @assert get((x=1, y=(z=1.0,)), lens) == (1, 0.0)
+julia> get((x=1, y=(z=1.0,)), lens)
+(1, 0.0)
 
-julia> @assert set((x=1, y=(z=2,)), lens, ("x", -1)) == (x="x", y=(z=exp(-1),))
+julia> @assert set((x=1, y=(z=2,)), lens, ("x", -1)) === (x="x", y=(z=exp(-1),))
 
 julia> lens = MultiLens((
            (@lens _.x) ∘ IndexBatchLens(:a, :b, :c),
            (@lens _.y) ∘ IndexBatchLens(:d, :e),
        )) ∘ FlatLens(3, 2);
 
-julia> @assert get((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens) === (1, 2, 3, 4, 5)
+julia> get((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens)
+(1, 2, 3, 4, 5)
 
-julia> @assert set((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens, (10, 20, 30, 40, 50)) ===
-           (x=(a=10, b=20, c=30), y=(d=40, e=50))
+julia> set((x=(a=1, b=2, c=3), y=(d=4, e=5)), lens, (10, 20, 30, 40, 50))
+(x = (a = 10, b = 20, c = 30), y = (d = 40, e = 50))
 ```
 
 Kaleido.jl also works with `AbstractTransform` defined in
@@ -75,7 +77,8 @@ julia> lens = (@lens _.y[2]) ∘ setting(as𝕀);
 
 julia> obj = (x=0, y=(1, 0.5, 3));
 
-julia> @assert get(obj, lens) == 0
+julia> get(obj, lens)
+0.0
 
 julia> @assert set(obj, lens, Inf).y[2] ≈ 1
 ```

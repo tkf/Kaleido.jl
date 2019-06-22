@@ -7,10 +7,11 @@ julia> using Setfield, Kaleido
 
 julia> lens = PropertyBatchLens(:a, :b, :c);
 
-julia> @assert get((a=1, b=2, c=3, d=4), lens) == (a=1, b=2, c=3)
+julia> get((a=1, b=2, c=3, d=4), lens)
+(a = 1, b = 2, c = 3)
 
-julia> @assert set((a=1, b=2, c=3, d=4), lens, (a=10, b=20, c=30)) ==
-           (a=10, b=20, c=30, d=4)
+julia> set((a=1, b=2, c=3, d=4), lens, (a=10, b=20, c=30))
+(a = 10, b = 20, c = 30, d = 4)
 ```
 """
 PropertyBatchLens
@@ -24,10 +25,11 @@ julia> using Setfield, Kaleido
 
 julia> lens = KeyBatchLens(:a, :b, :c);
 
-julia> @assert get((a=1, b=2, c=3, d=4), lens) == (a=1, b=2, c=3)
+julia> get((a=1, b=2, c=3, d=4), lens)
+(a = 1, b = 2, c = 3)
 
-julia> @assert set((a=1, b=2, c=3, d=4), lens, Dict(:a=>10, :b=>20, :c=>30)) ==
-           (a=10, b=20, c=30, d=4)
+julia> set((a=1, b=2, c=3, d=4), lens, Dict(:a=>10, :b=>20, :c=>30))
+(a = 10, b = 20, c = 30, d = 4)
 ```
 """
 KeyBatchLens
@@ -41,10 +43,11 @@ julia> using Setfield, Kaleido
 
 julia> lens = IndexBatchLens(:a, :b, :c);
 
-julia> @assert get((a=1, b=2, c=3, d=4), lens) == (1, 2, 3)
+julia> get((a=1, b=2, c=3, d=4), lens)
+(1, 2, 3)
 
-julia> @assert set((a=1, b=2, c=3, d=4), lens, (10, 20, 30)) ==
-           (a=10, b=20, c=30, d=4)
+julia> set((a=1, b=2, c=3, d=4), lens, (10, 20, 30))
+(a = 10, b = 20, c = 30, d = 4)
 ```
 """
 IndexBatchLens
