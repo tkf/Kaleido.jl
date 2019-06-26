@@ -1,8 +1,10 @@
+module Kaleido
+
+# Use README as the docstring of the module `Kaleido`:
 @doc let path = joinpath(dirname(@__DIR__), "README.md")
     include_dependency(path)
     replace(read(path, String), "```julia" => "```jldoctest README")
-end ->
-module Kaleido
+end Kaleido
 
 export
     @batchlens,
