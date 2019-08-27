@@ -13,7 +13,7 @@ A setter that does nothing; i.e., `set(x, nullsetter, y) === x` for any
 
 # Examples
 ```jldoctest
-julia> using Kaleido
+julia> using Setfield, Kaleido
 
 julia> set(1, nullsetter, 2)
 1
@@ -28,7 +28,7 @@ Apply `f` when setting.  Use `x -> get(x, f)` if `f` is a `Lens`.
 
 # Examples
 ```jldoctest
-julia> using Kaleido
+julia> using Setfield, Kaleido
 
 julia> setter = (@lens _.x) ∘ ToField(@lens _.a);
 
