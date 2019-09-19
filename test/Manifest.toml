@@ -2,11 +2,11 @@
 
 [[Aqua]]
 deps = ["Test"]
-git-tree-sha1 = "b081a2d712f5e4f12c6bb206916eded565461773"
+git-tree-sha1 = "6d697c372bd1a2b5a3c690113581f98e6b0e2ff5"
 repo-rev = "master"
 repo-url = "https://github.com/tkf/Aqua.jl"
 uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
-version = "0.3.0"
+version = "0.4.0"
 
 [[ArgCheck]]
 deps = ["Random"]
