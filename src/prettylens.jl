@@ -46,9 +46,12 @@ function prettylens_via_atlens(io, lens)
         if startswith(name, "(@lens ") && endswith(name, ")")
             if startswith(name, "(@lens _")
                 printhole(io)
-                print(io, name[length("(@lens _")+1:end-length(")")])
+                print(io, chop(name, head=length("(@lens _"), tail=length(")")))
             else
-                parts = split(name[length("(@lens ")+1:end-length(")")], "(_)")
+                parts = split(
+                    chop(name; head=length("(@lens "), tail=length(")")),
+                    "(_)",
+                )
                 print(io, parts[1])
                 for s in parts[2:end]
                     print(io, '(')
