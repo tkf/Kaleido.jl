@@ -15,6 +15,10 @@ matrix:
   fast_finish: true
 notifications:
   email: false
+
+# Do not build my PR twice.  Use the build on branch.
+if: NOT (type == pull_request AND head_repo == tkf/Kaleido.jl)
+
 install:
   - unset JULIA_PROJECT
   - julia -e 'using Pkg; pkg"add https://github.com/tkf/Run.jl"'
