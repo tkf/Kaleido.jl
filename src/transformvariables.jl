@@ -3,10 +3,6 @@ using .TransformVariables: AbstractTransform, transform, inverse
 setting(xf::AbstractTransform) = _setting(xf)
 getting(xf::AbstractTransform) = _getting(xf)
 
-struct XFBijection{INV, T} <: Bijection
-    xf::T
-end
-
 XFBijection{INV}(xf::T) where {INV, T} = XFBijection{INV, T}(xf)
 XFBijection(xf) = XFBijection{false}(xf)
 

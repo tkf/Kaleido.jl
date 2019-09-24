@@ -56,6 +56,10 @@ struct FunctionPair{TO, TI} <: Bijection
     tofield::TI
 end
 
+struct XFBijection{INV, T} <: Bijection
+    xf::T
+end
+
 Base.inv(bijection::FunctionPair) =
     FunctionPair(bijection.tofield, bijection.fromfield)
 

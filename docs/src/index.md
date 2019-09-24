@@ -31,7 +31,7 @@ Kaleido.settingasℝ₋
 Kaleido.settingas𝕀
 ```
 
-## Misc
+## Misc lenses
 
 ```@docs
 Kaleido.getting(::Any)
@@ -44,4 +44,10 @@ Kaleido.FLens
 ```@docs
 Kaleido.nullsetter
 Kaleido.ToField
+```
+
+## Utilities
+
+```@docs
+Kaleido.prettylens
 ```
