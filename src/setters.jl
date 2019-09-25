@@ -1,4 +1,4 @@
-abstract type Setter <: Lens end
+abstract type Setter <: KaleidoLens end
 
 Setfield.get(::Any, setter::Setter) = error("Setters do not support `get`.")
 
