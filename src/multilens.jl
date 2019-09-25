@@ -9,7 +9,8 @@ julia> using Setfield, Kaleido
 julia> ml = MultiLens((
            (@lens _.x),
            (@lens _.y.z),
-       ));
+       ))
+〈◻.x, ◻.y.z〉
 
 julia> get((x=1, y=(z=2,)), ml)
 (1, 2)
@@ -20,7 +21,8 @@ julia> set((x=1, y=(z=2,)), ml, ("x", "y.z"))
 julia> ml = MultiLens((
            a = (@lens _.x),
            b = (@lens _.y.z),
-       ));
+       ))
+〈◻.x, ◻.y.z〉
 
 julia> get((x=1, y=(z=2,)), ml)
 (a = 1, b = 2)
@@ -39,7 +41,8 @@ julia> ml = MultiLens(
                (@lens _.x),
                (@lens _.y.z),
            )
-       );
+       )
+〈◻.x, ◻.y.z〉
 
 julia> @assert get((x=1, y=(z=2,)), ml) === SVector(1, 2)
 ```
