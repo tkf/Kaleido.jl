@@ -1,5 +1,6 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Kaleido = "caafb194-7e8d-11e9-2724-d5981dd0806d"
 Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 TransformVariables = "84d833dd-6860-57f9-a1a7-6da5db126cff"
