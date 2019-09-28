@@ -69,6 +69,11 @@ prefer_singleton_callable(f) = f
 struct SingletonCallable{T} end
 (::SingletonCallable{T})(x) where T = T(x)
 
+@nospecialize
+_singleton_callable(::SingletonCallable{T}) where T = T
+_singleton_callable(f) = f
+@specialize
+
 ## Specialized foldl
 
 _tail(t) = Base.tail(t)

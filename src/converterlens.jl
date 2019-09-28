@@ -20,7 +20,8 @@ julia> using Kaleido, Setfield, StaticArrays
 
 julia> obj = (x = ((0, 1, 2), "A"), y = "B");
 
-julia> lens = (@lens _.x[1]) ∘ getting(SVector);
+julia> lens = (@lens _.x[1]) ∘ getting(SVector)
+(@lens _.x[1]) ∘ (←|SArray{Tuple{S},T,1,S} where T where S→)
 
 julia> get(obj, lens) === SVector(obj.x[1])
 true
@@ -29,12 +30,13 @@ julia> set(obj, lens, SVector(3, 4, 5))
 (x = ((3, 4, 5), "A"), y = "B")
 ```
 
-```jldoctest
+```jldoctest; filter = r"#[0-9]+"
 julia> using Kaleido, Setfield, StaticArrays
 
 julia> obj = (x = ((a = 0, b = 1, c = 2), "A"), y = "B");
 
-julia> lens = (@lens _.x[1]) ∘ getting(Base.splat(SVector));
+julia> lens = (@lens _.x[1]) ∘ getting(Base.splat(SVector))
+(@lens _.x[1]) ∘ (←|#60→)
 
 julia> get(obj, lens) === SVector(obj.x[1]...)
 true
@@ -67,7 +69,7 @@ The constructor `C` can be controlled by defining
 """
 getting(f) = ConverterLens(prefer_singleton_callable(f))
 
-struct ConverterLens{T} <: Lens
+struct ConverterLens{T} <: KaleidoLens
     f::T
 end
 

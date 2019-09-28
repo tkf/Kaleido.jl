@@ -99,9 +99,7 @@ function prettylens(io::IO, lens::BijectionLens{<:XFBijection{INV}}) where INV
 end
 
 function prettylens(io::IO, lens::ConverterLens)
-    print(io, "(")
-    print(io, lens.f)
-    print(io, "→)")
+    print(io, "(←|", _singleton_callable(lens.f), "→)")
 end
 
 function prettylens(io::IO, setter::ToField)
