@@ -15,6 +15,7 @@ include("preamble.jl")
         ));
          context = :compact => true,
     ) == "◻.a∘〈last(◻),◻[:c].d∘(←exp|log→)〉"
+    @test prettylens(nullsetter) == "nullsetter"
 end
 
 end  # module

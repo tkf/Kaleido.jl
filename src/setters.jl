@@ -21,6 +21,9 @@ julia> set(1, nullsetter, 2)
 """
 const nullsetter = NullSetter()
 
+Base.show(io::IO, ::NullSetter) = print(io, "nullsetter")
+# TODO: handle prefix
+
 """
     ToField(f) :: Setter
 

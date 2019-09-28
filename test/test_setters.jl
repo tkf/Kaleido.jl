@@ -4,6 +4,7 @@ include("preamble.jl")
 
 @testset "nullsetter" begin
     @test set(1, nullsetter, 2) === 1
+    @test string(nullsetter) === "nullsetter"
 end
 
 @testset "ToField" begin
