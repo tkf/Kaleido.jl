@@ -36,8 +36,6 @@ _default_show(io, obj) = print_apply(io, typeof(obj), _getfields(obj))
 
 Base.show(io::IO, lens::KaleidoLens) = _default_show(io, lens)
 Base.show(io::IO, ::MIME"text/plain", lens::KaleidoLens) = prettylens(io, lens)
-Base.show(io::IO, ::MIME"text/plain", lens::ComposedLens{<:KaleidoLens}) =
-    prettylens(io, lens)
 
 _constructor_of(x) = Setfield.constructor_of(x)
 _constructor_of(::Type{<:NamedTuple{names}}) where names = NamedTuple{names}
