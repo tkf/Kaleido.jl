@@ -5,7 +5,12 @@
 ```jldoctest
 julia> using Setfield, Kaleido
 
-julia> l = (@lens _.y[2]) ∘ converting(fromfield = x -> x/2, tofield = x -> 2x);
+julia> halve(x) = x / 2;
+
+julia> double(x) = 2x;
+
+julia> l = (@lens _.y[2]) ∘ converting(fromfield = halve, tofield = double)
+(@lens _.y[2]) ∘ (←double|halve→)
 
 julia> obj = (x=0, y=(1, 2, 3));
 
@@ -27,7 +32,8 @@ transformation).
 ```jldoctest
 julia> using Setfield, Kaleido, TransformVariables
 
-julia> l = (@lens _.y[2]) ∘ setting(as𝕀);
+julia> l = (@lens _.y[2]) ∘ setting(as𝕀)
+(@lens _.y[2]) ∘ (←|as𝕀→)
 
 julia> obj = (x=0, y=(1, 0.5, 3));
 
@@ -105,7 +111,8 @@ TransformVariables.jl.
 ```jldoctest
 julia> using Setfield, Kaleido
 
-julia> l = (@lens _.y[2]) ∘ settingasℝ₊;
+julia> l = (@lens _.y[2]) ∘ settingasℝ₊
+(@lens _.y[2]) ∘ (←exp|log→)
 
 julia> obj = (x=0, y=(0, 1, 2));
 
@@ -127,7 +134,8 @@ TransformVariables.jl.
 ```jldoctest
 julia> using Setfield, Kaleido
 
-julia> l = (@lens _.y[2]) ∘ settingasℝ₋;
+julia> l = (@lens _.y[2]) ∘ settingasℝ₋
+(@lens _.y[2]) ∘ (←negexp|logneg→)
 
 julia> obj = (x=0, y=(0, -1, 2));
 
@@ -149,7 +157,8 @@ TransformVariables.jl.
 ```jldoctest
 julia> using Setfield, Kaleido
 
-julia> l = (@lens _.y[2]) ∘ settingas𝕀;
+julia> l = (@lens _.y[2]) ∘ settingas𝕀
+(@lens _.y[2]) ∘ (←logistic|logit→)
 
 julia> obj = (x=0, y=(0, 0.5, 2));
 

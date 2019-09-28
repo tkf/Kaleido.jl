@@ -17,9 +17,11 @@ julia> obj = (a = 1, b = 1);
 
 julia> constraint = constraining() do obj
            @set obj.b = obj.a
-       end;
+       end
+constraining(#1)
 
-julia> lens = constraint ∘ @lens _.a;
+julia> lens = constraint ∘ @lens _.a
+constraining(#1) ∘ (@lens _.a)
 
 julia> get(obj, lens)
 1
@@ -71,3 +73,23 @@ Setfield.get(obj, lens::ConstrainingLens) =
 
 Setfield.set(::Any, lens::ConstrainingLens, obj) =
     lens.onset === Val(true) ? lens.f(obj) : obj
+
+function Base.show(io::IO, lens::ConstrainingLens)
+    # TODO: handle module prefix
+    print(io, "constraining(")
+    print(io, lens.f)
+    default = constraining(lens.f)
+    if lens !== default
+        # TODO: handle compat
+        prefix = "; "
+        if lens.onget !== default.onget
+            print(io, prefix, "onget=", lens.onget === Val(true))
+            prefix = ", "
+        end
+        if lens.onset !== default.onset
+            print(io, prefix, "onset=", lens.onset === Val(true))
+        end
+    end
+    print(io, ")")
+end
+Base.show(io::IO, ::MIME"text/plain", lens::ConstrainingLens) = show(io, lens)
