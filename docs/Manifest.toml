@@ -39,11 +39,16 @@ git-tree-sha1 = "84aa74986c5b9b898b0d1acaf3258741ee64754f"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
 version = "2.1.0"
 
+[[ConstructionBase]]
+git-tree-sha1 = "e3efe0a0f49dcd294c8c73e897b4fdf891f0fbd3"
+uuid = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
+version = "0.1.0"
+
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "0809951a1774dc724da22d26e4289bbaab77809a"
+git-tree-sha1 = "f94423c68f2e47db0d6f626a26d4872266e0ec3d"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.17.0"
+version = "0.17.2"
 
 [[Dates]]
 deps = ["Printf"]
@@ -71,9 +76,9 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[DocStringExtensions]]
 deps = ["LibGit2", "Markdown", "Pkg", "Test"]
-git-tree-sha1 = "0513f1a8991e9d83255e0140aace0d0fc4486600"
+git-tree-sha1 = "88bb0edb352b16608036faadcc071adda068582a"
 uuid = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
-version = "0.8.0"
+version = "0.8.1"
 
 [[Documenter]]
 deps = ["Base64", "DocStringExtensions", "InteractiveUtils", "JSON", "LibGit2", "Logging", "Markdown", "REPL", "Test", "Unicode"]
@@ -182,12 +187,12 @@ uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
 [[Setfield]]
-deps = ["MacroTools"]
-git-tree-sha1 = "b6bf75b1769b779c4773f641e062f79fa1d81966"
+deps = ["ConstructionBase", "MacroTools"]
+git-tree-sha1 = "48e02359e79fc1934905e96fc81f42678abf2b56"
 repo-rev = "master"
 repo-url = "https://github.com/jw3126/Setfield.jl.git"
 uuid = "efcf1570-3423-57d1-acb7-fd33fddbac46"
-version = "0.4.1"
+version = "0.5.0"
 
 [[SharedArrays]]
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
@@ -227,9 +232,9 @@ version = "0.5.6"
 
 [[TransformVariables]]
 deps = ["ArgCheck", "DocStringExtensions", "ForwardDiff", "LinearAlgebra", "MacroTools", "Parameters", "Pkg", "Random"]
-git-tree-sha1 = "1edd8bfa0b7bfcd74a379e4208293ff829b278b9"
+git-tree-sha1 = "df748ba8b73996f2b46fe9103b45f75a4a5561e0"
 uuid = "84d833dd-6860-57f9-a1a7-6da5db126cff"
-version = "0.3.6"
+version = "0.3.8"
 
 [[URIParser]]
 deps = ["Test", "Unicode"]
