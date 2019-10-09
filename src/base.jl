@@ -37,7 +37,10 @@ _default_show(io, obj) = print_apply(io, typeof(obj), _getfields(obj))
 Base.show(io::IO, lens::KaleidoLens) = _default_show(io, lens)
 Base.show(io::IO, ::MIME"text/plain", lens::KaleidoLens) = prettylens(io, lens)
 
-_constructor_of(x) = Setfield.constructor_of(x)
+# TODO: Remove custom `_constructor_of` definitions.  These are
+# different from ConstructionBase spec.
+@generated _constructor_of(::Type{T}) where T =
+    getfield(parentmodule(T), nameof(T))
 _constructor_of(::Type{<:NamedTuple{names}}) where names = NamedTuple{names}
 _constructor_of(::Type{<:Tuple}) = Tuple
 
