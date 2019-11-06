@@ -24,11 +24,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JULIA_DEBUG: CompatHelper
-        run: |-
+        run: >-
           julia -e '
-          using CompatHelper
-          CompatHelper.main() do
-              run(`julia --project=test -e 'import Pkg; Pkg.instantiate(); Pkg.update()'`)
-              run(`julia --project=docs -e 'import Pkg; Pkg.instantiate(); Pkg.update()'`)
+          using CompatHelper;
+          CompatHelper.main() do;
+              run(`julia --project=test -e 'import Pkg; Pkg.instantiate(); Pkg.update()'`);
+              run(`julia --project=docs -e 'import Pkg; Pkg.instantiate(); Pkg.update()'`);
           end
           '
