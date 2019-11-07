@@ -6,7 +6,7 @@
 [![Codecov](https://codecov.io/gh/tkf/Kaleido.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/tkf/Kaleido.jl)
 [![Coveralls](https://coveralls.io/repos/github/tkf/Kaleido.jl/badge.svg?branch=master)](https://coveralls.io/github/tkf/Kaleido.jl?branch=master)
 [![Aqua QA](https://img.shields.io/badge/Aqua.jl-%F0%9F%8C%A2-aqua.svg)](https://github.com/tkf/Aqua.jl)
-[![GitHub last commit](https://img.shields.io/github/last-commit/tkf/Kaleido.jl.svg?style=social&logo=github)](https://github.com/tkf/Kaleido.jl)
+[![GitHub commits since tagged version](https://img.shields.io/github/commits-since/tkf/Kaleido.jl/v0.2.0.svg?style=social&logo=github)](https://github.com/tkf/Kaleido.jl)
 
 Kaleido.jl is a collection of useful
 [`Lens`](https://jw3126.github.io/Setfield.jl/latest/index.html#Setfield.Lens)es
