@@ -172,11 +172,11 @@ uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
 [[Setfield]]
 deps = ["ConstructionBase", "MacroTools"]
-git-tree-sha1 = "56fa9e3c185aba397ddb96e4411a5119a1c77b1b"
+git-tree-sha1 = "f4adc8effec88c1dc109190f22370cb9648a5ced"
 repo-rev = "master"
 repo-url = "https://github.com/jw3126/Setfield.jl.git"
 uuid = "efcf1570-3423-57d1-acb7-fd33fddbac46"
-version = "0.5.1"
+version = "0.5.2"
 
 [[SharedArrays]]
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
