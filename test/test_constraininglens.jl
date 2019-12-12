@@ -13,4 +13,16 @@ include("preamble.jl")
     @test set(obj, lens, 2) === (a = 2, b = 2)
 end
 
+@testset "show" begin
+    @test string(constraining(identity)) == "constraining(identity)"
+    @test string(constraining(
+        identity;
+        onget = false,
+    )) == "constraining(identity; onget=false)"
+    @test string(constraining(
+        identity;
+        onset = Val(false),
+    )) == "constraining(identity; onset=false)"
+end
+
 end  # module
