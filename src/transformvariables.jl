@@ -6,7 +6,7 @@ getting(xf::AbstractTransform) = _getting(xf)
 XFBijection{INV}(xf::T) where {INV, T} = XFBijection{INV, T}(xf)
 XFBijection(xf) = XFBijection{false}(xf)
 
-Base.inv(bijection::XFBijection{INV}) where INV = XFBijection{!INF}(bijection.xf)
+Base.inv(bijection::XFBijection{INV}) where INV = XFBijection{!INV}(bijection.xf)
 
 Bijection(xf::AbstractTransform) = XFBijection(xf)
 tofield(b::XFBijection{false}, x) = transform(b.xf, x)
