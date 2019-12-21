@@ -210,9 +210,9 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TransformVariables]]
 deps = ["ArgCheck", "DocStringExtensions", "ForwardDiff", "LinearAlgebra", "MacroTools", "Parameters", "Pkg", "Random"]
-git-tree-sha1 = "df748ba8b73996f2b46fe9103b45f75a4a5561e0"
+git-tree-sha1 = "dd4c257cb7a997bcabb5c5afbe62e544c1a750ce"
 uuid = "84d833dd-6860-57f9-a1a7-6da5db126cff"
-version = "0.3.8"
+version = "0.3.9"
 
 [[URIParser]]
 deps = ["Test", "Unicode"]
