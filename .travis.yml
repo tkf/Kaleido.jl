@@ -4,13 +4,10 @@ os:
   - linux
   # - osx
 julia:
-  - 1.0
-  - 1.1
-  - 1.2
+  - 1.3
   - nightly
 matrix:
   allow_failures:
-    - julia: 1.2
     - julia: nightly
   fast_finish: true
 notifications:
@@ -32,8 +29,13 @@ after_success:
   - julia -e 'using Run; Run.after_success_test()'
 jobs:
   include:
+    - julia: 1.0
+      os: linux
+      install:
+        - julia -e 'using Run; Run.prepare("test/environments/jl10")'
+      script:
+        - julia -e 'using Run; Run.test(project="test/environments/jl10")'
     - stage: Documentation
-      julia: 1.2
       install:
         - julia -e 'using Run; Run.prepare_docs()'
       script:
