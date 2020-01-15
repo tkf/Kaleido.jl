@@ -1,3 +1,5 @@
+# This file is machine-generated - editing it directly is not advised
+
 [[ArgCheck]]
 deps = ["Random"]
 git-tree-sha1 = "dab25d711a1dedb707a55dbc1eb9fd578f76ff32"
@@ -20,9 +22,9 @@ version = "1.0.0"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "f784254f428fb8fd7ac15982e5862a38a44523d3"
+git-tree-sha1 = "ef162bfe3d872c326c0ecddeb45e3c13c1b74eda"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.17.7"
+version = "0.17.8"
 
 [[Dates]]
 deps = ["Printf"]
@@ -41,7 +43,7 @@ uuid = "b552c78f-8df3-52c6-915a-8e097449b14b"
 version = "1.0.0"
 
 [[Distributed]]
-deps = ["LinearAlgebra", "Random", "Serialization", "Sockets"]
+deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[DocStringExtensions]]
@@ -67,7 +69,7 @@ deps = ["Random"]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
 
 [[InteractiveUtils]]
-deps = ["LinearAlgebra", "Markdown"]
+deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[JSON]]
@@ -205,7 +207,7 @@ uuid = "84d833dd-6860-57f9-a1a7-6da5db126cff"
 version = "0.3.9"
 
 [[UUIDs]]
-deps = ["Random"]
+deps = ["Random", "SHA"]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [[Unicode]]
