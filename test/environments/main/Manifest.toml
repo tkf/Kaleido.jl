@@ -100,7 +100,7 @@ version = "0.21.0"
 
 [[Kaleido]]
 deps = ["Requires", "Setfield"]
-path = ".."
+path = "../../.."
 uuid = "caafb194-7e8d-11e9-2724-d5981dd0806d"
 version = "0.2.3-DEV"
 
