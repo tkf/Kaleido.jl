@@ -22,9 +22,9 @@ version = "1.0.0"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "OrderedCollections"]
-git-tree-sha1 = "ef162bfe3d872c326c0ecddeb45e3c13c1b74eda"
+git-tree-sha1 = "b7720de347734f4716d1815b00ce5664ed6bbfd4"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.17.8"
+version = "0.17.9"
 
 [[Dates]]
 deps = ["Printf"]
@@ -60,9 +60,9 @@ version = "0.24.3"
 
 [[ForwardDiff]]
 deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "NaNMath", "Random", "SpecialFunctions", "StaticArrays"]
-git-tree-sha1 = "840700059391d36e2498d89c2e82c08f261f2a2a"
+git-tree-sha1 = "88b082d492be6b63f967b6c96b352e25ced1a34c"
 uuid = "f6369f11-7733-5829-9624-2563aa707210"
-version = "0.10.8"
+version = "0.10.9"
 
 [[Future]]
 deps = ["Random"]
@@ -82,7 +82,7 @@ version = "0.21.0"
 deps = ["Requires", "Setfield"]
 path = ".."
 uuid = "caafb194-7e8d-11e9-2724-d5981dd0806d"
-version = "0.2.4-DEV"
+version = "0.2.5-DEV"
 
 [[LibGit2]]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
