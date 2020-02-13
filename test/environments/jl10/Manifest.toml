@@ -7,10 +7,9 @@ uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
 version = "0.4.0"
 
 [[ArgCheck]]
-deps = ["Random"]
-git-tree-sha1 = "dab25d711a1dedb707a55dbc1eb9fd578f76ff32"
+git-tree-sha1 = "e14de95bcfacd85e00f5369958a38bb72827bce2"
 uuid = "dce04be8-c92d-5529-be00-80e4d2c0e197"
-version = "1.0.1"
+version = "1.1.0"
 
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
