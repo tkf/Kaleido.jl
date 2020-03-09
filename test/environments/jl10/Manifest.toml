@@ -99,7 +99,7 @@ version = "0.21.0"
 deps = ["Requires", "Setfield"]
 path = "../../.."
 uuid = "caafb194-7e8d-11e9-2724-d5981dd0806d"
-version = "0.2.5-DEV"
+version = "0.2.6-DEV"
 
 [[LibGit2]]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
