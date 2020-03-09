@@ -1,7 +1,7 @@
 name = "Kaleido"
 uuid = "caafb194-7e8d-11e9-2724-d5981dd0806d"
 authors = ["Takafumi Arakaki <aka.tkf@gmail.com>"]
-version = "0.2.5-DEV"
+version = "0.2.6-DEV"
 
 [deps]
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"

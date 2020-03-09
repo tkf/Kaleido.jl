@@ -3,7 +3,7 @@
 
 Create a lens to impose constraints by a callable `f`.
 
-* The callable `f` must be idempotent; i.e., `f ∘ f = identity`.
+* The callable `f` must be idempotent; i.e., `f ∘ f = f`.
 
 * If the original object already satisfies the constraint
   (i.e. `f(obj) == obj`), `onget=false` can be passed safely to skip
