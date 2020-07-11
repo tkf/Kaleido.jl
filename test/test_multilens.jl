@@ -3,6 +3,7 @@ module TestMultiLens
 include("preamble.jl")
 using InteractiveUtils
 using StaticArrays
+using StaticNumbers: static
 
 function test_positional_set(ml)
     @test set((x=1, y=(z=2,)), ml, ("x", "y.z")) === (x="x", y=(z="y.z",))
@@ -96,8 +97,8 @@ function codegen_multilens_tuple()
         (@lens _.a.b),
         # (@lens _.c[1]),
         # (@lens _.c[2]),
-        (@lens _.c[$1]),
-        (@lens _.c[$2]),
+        (@lens _.c[static(1)]),
+        (@lens _.c[static(2)]),
     ))
     x = (1, 2, 3)
     return sum(get(set(obj, lens, x), lens))
@@ -110,8 +111,8 @@ function codegen_multilens_namedtuple()
     )
     lens = MultiLens((
         i = (@lens _.a.b),
-        j = (@lens _.c[$1]),
-        k = (@lens _.c[$2]),
+        j = (@lens _.c[static(1)]),
+        k = (@lens _.c[static(2)]),
     ))
     x = (k = 1, i = 2, j = 3)
     return sum(Tuple(get(set(obj, lens, x), lens)))
@@ -126,8 +127,8 @@ function codegen_multilens_svector()
         SVector,
         (
             (@lens _.a.b),
-            (@lens _.c[$1]),
-            (@lens _.c[$2]),
+            (@lens _.c[static(1)]),
+            (@lens _.c[static(2)]),
         )
     )
     x = (1, 2, 3)
