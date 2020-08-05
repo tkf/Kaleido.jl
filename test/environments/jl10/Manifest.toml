@@ -1,10 +1,10 @@
 [[Aqua]]
 deps = ["Pkg", "Test"]
-git-tree-sha1 = "3a45b0fd092e5e35bde98d244dbf53f1438aede9"
+git-tree-sha1 = "bac58b993dda4d3bf10d986424b7d14be3b9afa7"
 repo-rev = "master"
 repo-url = "https://github.com/tkf/Aqua.jl"
 uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
-version = "0.4.4-DEV"
+version = "0.4.5-DEV"
 
 [[ArgCheck]]
 git-tree-sha1 = "e14de95bcfacd85e00f5369958a38bb72827bce2"
