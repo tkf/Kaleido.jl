@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - actions/trigger/pkg-update
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,8 +15,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # https://github.com/tkf/julia-merge-except-manifests
-      - name: 'Merge master to create-pull-request/pkg-update'
-        uses: tkf/julia-merge-except-manifests@v1
+      - uses: tkf/julia-merge-except-manifests@v1
         with:
           target: create-pull-request/pkg-update
 
@@ -34,7 +34,7 @@ jobs:
       # https://github.com/peter-evans/create-pull-request
       # https://github.com/marketplace/actions/create-pull-request
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Update */Manifest.toml
@@ -42,6 +42,8 @@ jobs:
           body: |
             ## Commit Message
             Update */Manifest.toml
+
+            Manifest.toml files are updated via GitHub Actions.
 
           # When merging PR via Mergify using squash method, it can
           # create large commit message by listing titles of all
@@ -52,7 +54,6 @@ jobs:
           # https://doc.mergify.io/actions.html#commit-message-and-squash-method
           labels: no changelog
           branch: create-pull-request/pkg-update
-          branch-suffix: none
           base: master
       - name: Check output environment variable
         run: echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
