@@ -7,9 +7,9 @@ uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
 version = "0.4.5-DEV"
 
 [[ArgCheck]]
-git-tree-sha1 = "e14de95bcfacd85e00f5369958a38bb72827bce2"
+git-tree-sha1 = "dedbbb2ddb876f899585c4ec4433265e3017215a"
 uuid = "dce04be8-c92d-5529-be00-80e4d2c0e197"
-version = "1.1.0"
+version = "2.1.0"
 
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
@@ -212,9 +212,9 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TransformVariables]]
 deps = ["ArgCheck", "DocStringExtensions", "ForwardDiff", "LinearAlgebra", "MacroTools", "Parameters", "Pkg", "Random"]
-git-tree-sha1 = "dd4c257cb7a997bcabb5c5afbe62e544c1a750ce"
+git-tree-sha1 = "cd253a2ff93ee97e8d2bc938a3dc71d822d89dd9"
 uuid = "84d833dd-6860-57f9-a1a7-6da5db126cff"
-version = "0.3.9"
+version = "0.3.10"
 
 [[URIParser]]
 deps = ["Unicode"]
