@@ -1,10 +1,10 @@
 [[Aqua]]
 deps = ["Pkg", "Test"]
-git-tree-sha1 = "6d67e79e25749380439f1cb1bcdd926f2d6947c2"
+git-tree-sha1 = "3adc536b8a80ecfcbb0c07c868eddf4a8e1582d4"
 repo-rev = "master"
 repo-url = "https://github.com/tkf/Aqua.jl"
 uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
-version = "0.4.6-DEV"
+version = "0.4.8-DEV"
 
 [[ArgCheck]]
 git-tree-sha1 = "dedbbb2ddb876f899585c4ec4433265e3017215a"
@@ -85,9 +85,9 @@ uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[JSON]]
 deps = ["Dates", "Mmap", "Parsers", "Unicode"]
-git-tree-sha1 = "b34d7cef7b337321e97d22242c3c2b91f476748e"
+git-tree-sha1 = "81690084b6198a2e1da36fcfda16eeca9f9f24e4"
 uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
-version = "0.21.0"
+version = "0.21.1"
 
 [[Kaleido]]
 deps = ["Requires", "Setfield"]
