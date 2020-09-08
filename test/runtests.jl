@@ -3,27 +3,17 @@ using Test
 
 @testset "$file" for file in sort([file for file in readdir(@__DIR__) if
                                    match(r"^test_.*\.jl$", file) !== nothing])
-    file == "test_doctest.jl" && VERSION < v"1.2" && continue
-    include(file)
-end
+    if file == "test_doctest.jl"
+        if lowercase(get(ENV, "JULIA_PKGEVAL", "false")) == "true"
+            @info "Skipping doctests on PkgEval."
+            continue
+        elseif VERSION < v"1.2"
+            @info "Skipping doctests on Julia $VERSION."
+            continue
+        end
+    end
 
-using Aqua
-using Kaleido
-#=
-Aqua.test_all(Kaleido)
-=#
-@testset "Aqua" begin
-    @testset "Method ambiguity" begin
-        # Not including `Base` due to
-        # https://github.com/JuliaCollections/DataStructures.jl/pull/511
-        Aqua.test_ambiguities(Kaleido)
-    end
-    @testset "Unbound type parameters" begin
-        Aqua.test_unbound_args(Kaleido)
-    end
-    @testset "Undefined exports" begin
-        Aqua.test_undefined_exports(Kaleido)
-    end
+    include(file)
 end
 
 end  # module
