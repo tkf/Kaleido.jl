@@ -15,4 +15,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/tkf/Kaleido.jl",
+    push_preview = true,
 )
