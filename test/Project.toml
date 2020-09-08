@@ -8,3 +8,6 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StaticNumbers = "c5e4b96a-f99f-5557-8ed2-dc63ef9b5131"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TransformVariables = "84d833dd-6860-57f9-a1a7-6da5db126cff"
+
+[compat]
+Aqua = "0.4.7"
