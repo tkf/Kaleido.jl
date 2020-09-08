@@ -3,7 +3,16 @@ using Test
 
 @testset "$file" for file in sort([file for file in readdir(@__DIR__) if
                                    match(r"^test_.*\.jl$", file) !== nothing])
-    file == "test_doctest.jl" && VERSION < v"1.2" && continue
+    if file == "test_doctest.jl"
+        if lowercase(get(ENV, "JULIA_PKGEVAL", "false")) == "true"
+            @info "Skipping doctests on PkgEval."
+            continue
+        elseif VERSION < v"1.2"
+            @info "Skipping doctests on Julia $VERSION."
+            continue
+        end
+    end
+
     include(file)
 end
 
