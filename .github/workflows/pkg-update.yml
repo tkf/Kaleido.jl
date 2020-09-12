@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#push-using-ssh-deploy-keys
 
       # https://github.com/tkf/julia-merge-except-manifests
       - uses: tkf/julia-merge-except-manifests@v1
@@ -23,7 +26,7 @@ jobs:
       - name: Update */Manifest.toml
         uses: tkf/julia-update-manifests@v1
         with:
-          version: '1.3'
+          version: '1.4'
           projects: test/environments/main docs
       - name: Update test/environments/jl10/Manifest.toml
         uses: tkf/julia-update-manifests@v1
