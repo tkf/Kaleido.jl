@@ -22,9 +22,9 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
 [[ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "a8a75576d509f1996fe3046ce62e5685b0a8bd3a"
+git-tree-sha1 = "0893f8d90331a0f5223c7ef2a8868464394a886c"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "0.9.31"
+version = "0.9.33"
 
 [[CommonSubexpressions]]
 deps = ["MacroTools", "Test"]
