@@ -252,9 +252,9 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TransformVariables]]
 deps = ["ArgCheck", "DocStringExtensions", "ForwardDiff", "LinearAlgebra", "Parameters", "Pkg", "Random"]
-git-tree-sha1 = "d65e475c834c618740f0ff123936a07135963b1b"
+git-tree-sha1 = "05cbdc6c521a03d5c258b682eb4f7e04d20991ba"
 uuid = "84d833dd-6860-57f9-a1a7-6da5db126cff"
-version = "0.3.11"
+version = "0.3.12"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
