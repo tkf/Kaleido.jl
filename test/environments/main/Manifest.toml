@@ -22,9 +22,9 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
 [[ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "bd0cc939d94b8bd736dce5bbbe0d635db9f94af7"
+git-tree-sha1 = "e6b23566e025d3b0d9ccc397f5c7a134af552e27"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "0.9.41"
+version = "0.9.42"
 
 [[CommonSubexpressions]]
 deps = ["MacroTools", "Test"]
@@ -163,9 +163,9 @@ uuid = "efe28fd5-8261-553b-a9e1-b2916fc3738e"
 version = "0.5.3+4"
 
 [[OrderedCollections]]
-git-tree-sha1 = "4fa2ba51070ec13fcc7517db714445b4ab986bdf"
+git-tree-sha1 = "85f8e6578bf1f9ee0d11e7bb1b1456435479d47c"
 uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
-version = "1.4.0"
+version = "1.4.1"
 
 [[Parameters]]
 deps = ["OrderedCollections", "UnPack"]
