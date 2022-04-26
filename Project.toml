@@ -1,16 +1,16 @@
 name = "Kaleido"
 uuid = "caafb194-7e8d-11e9-2724-d5981dd0806d"
 authors = ["Takafumi Arakaki <aka.tkf@gmail.com>"]
-version = "0.2.7-DEV"
+version = "0.2.8"
 
 [deps]
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
 
 [compat]
-Requires = "0.5, 1.0"
-Setfield = "0.3, 0.4, 0.5, 0.6, 0.7"
-julia = "1.0"
+Requires = "0.5, ^1.0"
+Setfield = "0.3, 0.4, 0.5, 0.6, 0.7, ^0.8"
+julia = "^1.0"
 
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
