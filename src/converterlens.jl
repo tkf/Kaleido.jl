@@ -21,7 +21,7 @@ julia> using Kaleido, Setfield, StaticArrays
 julia> obj = (x = ((0, 1, 2), "A"), y = "B");
 
 julia> lens = (@lens _.x[1]) ∘ getting(SVector)
-(@lens _.x[1]) ∘ (←|SArray{Tuple{S},T,1,S} where T where S→)
+(@lens _.x[1]) ∘ (←|SVector{S, T} where {S, T}→)
 
 julia> get(obj, lens) === SVector(obj.x[1])
 true
