@@ -316,9 +316,9 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TransformVariables]]
 deps = ["ArgCheck", "ChangesOfVariables", "DocStringExtensions", "ForwardDiff", "InverseFunctions", "LinearAlgebra", "LogExpFunctions", "Pkg", "Random", "UnPack"]
-git-tree-sha1 = "073d77d127ecaa70444cae1d3b2835129c4b6d81"
+git-tree-sha1 = "ad8c71db845c2b7ba9c89da66de942c0d487f924"
 uuid = "84d833dd-6860-57f9-a1a7-6da5db126cff"
-version = "0.6.3"
+version = "0.7.0"
 
 [[UUIDs]]
 deps = ["Random", "SHA"]
