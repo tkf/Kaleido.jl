@@ -5,9 +5,9 @@ version = "0.0.1"
 
 [[Aqua]]
 deps = ["Compat", "Pkg", "Test"]
-git-tree-sha1 = "cee4fc289106df4d2d7f25f3918211b271e38bb0"
+git-tree-sha1 = "58158212e39863adcd38a4bc2c4ec5be31841047"
 uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
-version = "0.5.6"
+version = "0.6.0"
 
 [[ArgCheck]]
 git-tree-sha1 = "a3a402a35a2f7e0b87828ccabbd5ebfbebe356b4"
