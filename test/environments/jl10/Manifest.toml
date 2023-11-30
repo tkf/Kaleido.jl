@@ -5,9 +5,9 @@ version = "0.0.1"
 
 [[Aqua]]
 deps = ["Compat", "Pkg", "Test"]
-git-tree-sha1 = "5335a09a386192404de8d774f5ad753513e4fe09"
+git-tree-sha1 = "470252a650c4cc6e924f6151614c7a4bb69f8eae"
 uuid = "4c88cf16-eb10-579e-8560-4a9242c79595"
-version = "0.8.2"
+version = "0.8.3"
 
 [[ArgCheck]]
 git-tree-sha1 = "a3a402a35a2f7e0b87828ccabbd5ebfbebe356b4"
@@ -49,9 +49,9 @@ version = "0.3.0"
 
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "SHA", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
-git-tree-sha1 = "6c0100a8cf4ed66f66e2039af7cde3357814bad2"
+git-tree-sha1 = "d476eaeddfcdf0de15a67a948331c69a585495fa"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "3.46.2"
+version = "3.47.0"
 
 [[ConstructionBase]]
 deps = ["LinearAlgebra"]
