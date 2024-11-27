@@ -11,9 +11,9 @@ uuid = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
 version = "0.4.5"
 
 [[ArgCheck]]
-git-tree-sha1 = "a3a402a35a2f7e0b87828ccabbd5ebfbebe356b4"
+git-tree-sha1 = "680b3b8759bd4c54052ada14e52355ab69e07876"
 uuid = "dce04be8-c92d-5529-be00-80e4d2c0e197"
-version = "2.3.0"
+version = "2.4.0"
 
 [[ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
